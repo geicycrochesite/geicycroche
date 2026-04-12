@@ -25,16 +25,16 @@ export default function AdminLayout({
   return (
     <html lang="pt-br">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden w-full bg-slate-50 text-slate-900`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden w-full bg-[var(--color-admin-bg)] text-[var(--color-admin-text)]`}
       >
         <Toaster position="top-right" reverseOrder={false} />
 
         <div className="flex min-h-screen w-full flex-col">
-          <header className="border-b border-slate-200 bg-white shadow-sm">
+          <header className="border-b border-[var(--color-admin-border)] bg-[var(--color-admin-bg)] shadow-sm">
             <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-              <h1 className="text-xl font-bold">Admin • Artesanaio</h1>
+              <h1 className="text-xl font-bold">Administração</h1>
 
-              <nav className="flex items-center gap-3 text-sm font-medium text-slate-600">
+              <nav className="flex items-center gap-3 text-sm font-medium text-[var(--color-admin-text)]">
                 <Link href="/">Loja</Link>
                 <Link href="/admin">Dashboard</Link>
                 <Link href="/admin/products">Produtos</Link>

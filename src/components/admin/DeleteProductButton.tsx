@@ -42,7 +42,7 @@ export default function DeleteProductButton({ productId }: Props) {
       type="button"
       onClick={handleDelete}
       disabled={isDeleting}
-      className="rounded-md bg-rose-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-rose-700 disabled:cursor-not-allowed disabled:bg-rose-300"
+      className="rounded-md bg-[var(--color-error)] px-3 py-2 text-sm font-semibold text-[var(--color-text-primary)] transition hover:bg-[var(--color-error)]/80 disabled:cursor-not-allowed disabled:bg-[var(--color-bg-tertiary)]"
     >
       {isDeleting ? 'Excluindo...' : 'Excluir'}
     </button>

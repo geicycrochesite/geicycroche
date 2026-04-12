@@ -125,7 +125,7 @@ ${data.produtos
 
   .etiqueta {
     margin: 20px 0;
-    border: 1px solid #ccc;
+    border: 1px solid var(--color-border);
     padding: 10px;
   }
 

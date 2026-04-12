@@ -9,11 +9,11 @@ type SalesData = {
 
 export function SalesChart({ data }: { data: SalesData[] }) {
   return (
-    <div className="h-80 w-full rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <div className="h-80 w-full rounded-xl border border-[var(--color-admin-border)] bg-[var(--color-admin-bg)] p-4 shadow-sm">
       <h2 className="mb-3 text-lg font-semibold">Vendas por dia (últimos 30 dias)</h2>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" />
           <XAxis dataKey="date" tick={{ fontSize: 12 }} />
           <YAxis tickFormatter={(value) => `R$${Number(value).toFixed(0)}`} />
           <Tooltip
@@ -23,7 +23,7 @@ export function SalesChart({ data }: { data: SalesData[] }) {
               return [`R$${num.toFixed(2)}`, 'Vendas']
             }}
           />
-          <Line type="monotone" dataKey="value" stroke="#2563eb" strokeWidth={2} dot={{ r: 2 }} />
+          <Line type="monotone" dataKey="value" stroke="var(--color-info)" strokeWidth={2} dot={{ r: 2 }} />
         </LineChart>
       </ResponsiveContainer>
     </div>

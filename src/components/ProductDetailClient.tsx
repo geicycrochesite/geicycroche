@@ -47,17 +47,17 @@ export default function ProductDetailClient({ product }: { product: ProductDetai
 
     toast.custom((t) => (
       <div
-        className={`max-w-sm w-full bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 p-4 flex justify-between items-center gap-4 ${
+        className={`max-w-sm w-full bg-[var(--color-admin-bg)] shadow-lg rounded-lg pointer-events-auto ring-1 ring-[var(--color-border)] p-4 flex justify-between items-center gap-4 ${
           t.visible ? 'animate-enter' : 'animate-leave'
         }`}
       >
         <div className="flex-1">
-          <p className="text-sm font-semibold text-gray-900">Produto adicionado!</p>
-          <p className="text-sm text-gray-500">Você pode continuar comprando ou ver o carrinho.</p>
+          <p className="text-sm font-semibold text-[var(--color-admin-text)]">Produto adicionado!</p>
+          <p className="text-sm text-[var(--color-text-secondary)]">Você pode continuar comprando ou ver o carrinho.</p>
         </div>
         <Link
           href="/carrinho"
-          className="text-green-700 font-medium hover:underline text-sm"
+          className="text-[var(--color-success)] font-medium hover:underline text-sm"
           onClick={() => toast.dismiss(t.id)}
         >
           Ver carrinho
@@ -84,19 +84,19 @@ export default function ProductDetailClient({ product }: { product: ProductDetai
 
     {/* Informações */}
     <div className="flex-1 space-y-6">
-      <h1 className="text-3xl font-bold">{name}</h1>
+      <h1 className="text-3xl font-bold text-[var(--color-text-primary)]">{name}</h1>
 
       <FreteCalculator quantidade={1} />
 
-      <p className="text-lg text-gray-700">{description}</p>
+      <p className="text-lg text-[var(--color-text-secondary)]">{description}</p>
 
-      <p className="text-2xl text-green-700 font-bold">
+      <p className="text-2xl text-[var(--color-success)] font-bold">
         R$ {price.toFixed(2)}
       </p>
 
       {/* Seleção de cor */}
       <div>
-        <h2 className="font-semibold mb-2">Escolha a cor:</h2>
+        <h2 className="font-semibold text-[var(--color-text-primary)] mb-2">Escolha a cor:</h2>
         <div className="flex gap-3">
           {colors.map((color) => (
             <button
@@ -117,16 +117,16 @@ export default function ProductDetailClient({ product }: { product: ProductDetai
 
       {/* Seleção de tamanho */}
       <div>
-        <h2 className="font-semibold mb-2">Escolha o tamanho:</h2>
+        <h2 className="font-semibold text-[var(--color-text-primary)] mb-2">Escolha o tamanho:</h2>
         <div className="flex gap-3">
           {sizes.map((size) => (
             <button
               key={size.id}
               type="button"
-              className={`px-3 py-1 border rounded-md transition ${
+              className={`px-3 py-1 border border-[var(--color-border)] rounded-md transition ${
                 selectedSize?.id === size.id
-                  ? 'bg-[#000020] text-white'
-                  : 'hover:bg-gray-200'
+                  ? 'bg-[var(--color-accent)] text-[var(--color-text-primary)]'
+                  : 'bg-[var(--color-bg-tertiary)] text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)]'
               }`}
               onClick={() => setSelectedSize(size)}
             >
@@ -140,7 +140,7 @@ export default function ProductDetailClient({ product }: { product: ProductDetai
       <button
         onClick={handleAddToCart}
         type="button"
-        className="w-full bg-green-700 text-white py-3 rounded-md hover:bg-green-800 transition"
+        className="w-full bg-[var(--color-success)] text-[var(--color-text-primary)] py-3 rounded-md hover:bg-[var(--color-success-hover)] transition"
       >
         Adicionar ao Carrinho
       </button>

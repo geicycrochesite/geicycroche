@@ -86,66 +86,66 @@ export default function SetupAdminClient() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow">
+    <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg-primary)] p-4">
+      <div className="w-full max-w-md bg-[var(--color-admin-bg)] p-8 rounded-lg shadow">
         <h1 className="text-2xl font-bold mb-2">Criar Admin</h1>
-        <p className="text-gray-600 text-sm mb-6">
+        <p className="text-[var(--color-text-secondary)] text-sm mb-6">
           Configure o primeiro usuário administrador do sistema.
         </p>
 
         {error && (
-          <div className="mb-4 px-3 py-2 text-sm text-red-700 bg-red-100 rounded">
+          <div className="mb-4 px-3 py-2 text-sm text-[var(--color-error)] bg-[var(--color-error)]/20 rounded">
             {error}
           </div>
         )}
 
         {success && (
-          <div className="mb-4 px-3 py-2 text-sm text-green-700 bg-green-100 rounded">
+          <div className="mb-4 px-3 py-2 text-sm text-[var(--color-success)] bg-[var(--color-success)]/20 rounded">
             ✅ Admin criado com sucesso! Redirecionando...
           </div>
         )}
 
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <label className="block text-sm font-medium text-[var(--color-admin-text)]">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="admin@exemplo.com"
               required
-              className="w-full mt-1 p-2 border rounded outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-2 border border-[var(--color-admin-border)] bg-[var(--color-bg-tertiary)] rounded outline-none focus:ring-2 focus:ring-[var(--color-accent)] text-[var(--color-admin-text)]"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Senha</label>
+            <label className="block text-sm font-medium text-[var(--color-admin-text)]">Senha</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••"
               required
-              className="w-full mt-1 p-2 border rounded outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-2 border border-[var(--color-admin-border)] bg-[var(--color-bg-tertiary)] rounded outline-none focus:ring-2 focus:ring-[var(--color-accent)] text-[var(--color-admin-text)]"
             />
-            <p className="text-xs text-gray-500 mt-1">Mínimo 6 caracteres</p>
+            <p className="text-xs text-[var(--color-text-tertiary)] mt-1">Mínimo 6 caracteres</p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Confirmar Senha</label>
+            <label className="block text-sm font-medium text-[var(--color-admin-text)]">Confirmar Senha</label>
             <input
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="••••••"
               required
-              className="w-full mt-1 p-2 border rounded outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full mt-1 p-2 border border-[var(--color-admin-border)] bg-[var(--color-bg-tertiary)] rounded outline-none focus:ring-2 focus:ring-[var(--color-accent)] text-[var(--color-admin-text)]"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+            className="w-full py-2 px-4 bg-[var(--color-info)] text-[var(--color-text-primary)] rounded hover:bg-[var(--color-info)]/80 disabled:opacity-50"
             disabled={loading || !key}
           >
             {loading ? 'Criando...' : 'Criar Admin'}

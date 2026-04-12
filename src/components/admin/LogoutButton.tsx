@@ -32,7 +32,7 @@ export function LogoutButton() {
     <button
       onClick={handleLogout}
       disabled={loading}
-      className="rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700 disabled:opacity-50"
+      className="rounded bg-[var(--color-error)] px-3 py-1 text-[var(--color-text-primary)] hover:bg-[var(--color-error)]/80 disabled:opacity-50"
     >
       {loading ? 'Saindo...' : 'Logout'}
     </button>
