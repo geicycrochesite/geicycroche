@@ -42,29 +42,33 @@ export async function POST(request: Request) {
   }
 
   try {
-    const product = await prisma.product.create({
-      data: {
-        name,
-        slug,
-        description,
-        price,
-        stock,
-        materials,
-        handmade,
-        youtubeUrl: youtubeUrl || null,
-        imageUrl: imageUrls[0],
-        categories: categories && categories.length > 0 ? { connect: categories.map((categoryId) => ({ id: categoryId })) } : undefined,
-        images: {
-          createMany: {
-            data: imageUrls.map((url) => ({ url })),
-          },
-        },
+   const product = await prisma.product.create({
+  data: {
+    name,
+    slug,
+    description,
+    price,
+    stock,
+    materials,
+    handmade,
+    youtubeUrl: youtubeUrl || null,
+
+    categories:
+      categories && categories.length > 0
+        ? { connect: categories.map((categoryId) => ({ id: categoryId })) }
+        : undefined,
+
+    images: {
+      createMany: {
+        data: imageUrls.map((url) => ({ url })),
       },
-      include: {
-        categories: true,
-        images: true,
-      },
-    })
+    },
+  },
+  include: {
+    categories: true,
+    images: true,
+  },
+})
 
     return NextResponse.json(product)
   } catch (error) {
@@ -77,3 +81,4 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: 'Erro interno ao criar produto.' }, { status: 500 })
   }
 }
+

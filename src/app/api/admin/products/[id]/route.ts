@@ -34,7 +34,20 @@ type AdminProductUpdateRequest = {
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const body = (await request.json()) as AdminProductUpdateRequest
-  const { name, slug, description, price, stock, materials, handmade, categories, youtubeUrl, imageUrls, removeImageIds } = body
+
+  const {
+    name,
+    slug,
+    description,
+    price,
+    stock,
+    materials,
+    handmade,
+    categories,
+    youtubeUrl,
+    imageUrls,
+    removeImageIds,
+  } = body
 
   if (!name || !slug || !description || typeof price !== 'number' || typeof stock !== 'number' || !Array.isArray(imageUrls)) {
     return NextResponse.json({ message: 'Dados do produto incompletos.' }, { status: 400 })
@@ -52,6 +65,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   const remainingImageUrls = product.images
     .filter((image) => !removeImageIds?.includes(image.id))
     .map((image) => image.url)
+
   const finalImageUrls = [...remainingImageUrls, ...imageUrls]
 
   if (finalImageUrls.length === 0) {
@@ -70,20 +84,31 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
         materials: materials || null,
         handmade,
         youtubeUrl: youtubeUrl || null,
-        imageUrl: finalImageUrls[0],
+
+        // ❌ REMOVIDO imageUrl
+
         categories: {
           set: categories.map((categoryId) => ({ id: categoryId })),
         },
+
         images: {
           ...(removeImageIds && removeImageIds.length > 0
             ? { deleteMany: { id: { in: removeImageIds } } }
             : {}),
+
           ...(imageUrls.length > 0
-            ? { createMany: { data: imageUrls.map((url) => ({ url })) } }
+            ? {
+                createMany: {
+                  data: imageUrls.map((url) => ({ url })),
+                },
+              }
             : {}),
         },
       },
-      include: { categories: true, images: { orderBy: { createdAt: 'desc' } } },
+      include: {
+        categories: true,
+        images: { orderBy: { createdAt: 'desc' } },
+      },
     })
 
     return NextResponse.json(updatedProduct)

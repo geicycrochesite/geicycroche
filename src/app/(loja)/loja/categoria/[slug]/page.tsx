@@ -14,7 +14,7 @@ export default async function CategoriaPage({ params }: CategoriaPageProps) {
 
   if (slug === 'todos') {
     produtos = await prisma.product.findMany({
-      include: { colors: true, sizes: true },
+      include: { colors: true, sizes: true, images: { orderBy: { createdAt: 'desc' } } },
       orderBy: { createdAt: 'desc' }
     })
     categoriaNome = 'Todos os Produtos'
@@ -26,6 +26,7 @@ export default async function CategoriaPage({ params }: CategoriaPageProps) {
           include: {
             colors: true,
             sizes: true,
+            images: { orderBy: { createdAt: 'desc' } },
           },
         },
       },
@@ -51,7 +52,7 @@ export default async function CategoriaPage({ params }: CategoriaPageProps) {
               href={`/loja/produto/${product.slug}`}
               className="border rounded p-4 hover:shadow-lg transition"
             >
-              <img src={product.imageUrl || '/logo-artesanaio.jpeg'} alt={product.name} className="w-full h-120 object-cover mb-2 rounded" />
+              <img src={product.images?.[0]?.url || '/logo-artesanaio.jpeg'} alt={product.name} className="w-full h-120 object-cover mb-2 rounded" />
               <h2 className="font-semibold text-lg">{product.name}</h2>
               <p className="text-gray-600">R$ {product.price.toFixed(2)}</p>
               <button className='bg-green-600 px-8 py-2 m-4 rounded-xl text-center font-bold text-white'>VER DETALHES</button>

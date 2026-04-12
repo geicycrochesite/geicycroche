@@ -1,5 +1,3 @@
-// src/app/loja/produto/[slug]/page.tsx
-
 import Link from 'next/link'
 import ProductDetailClient, { ProductDetailClientProps } from '@/components/ProductDetailClient'
 import prisma from '@/lib/prisma'
@@ -8,48 +6,47 @@ type ProdutoPageProps = {
   params: Promise<{ slug: string }>
 }
 
-type ProductWithRelations = {
-  id: string
-  name: string
-  slug: string
-  imageUrl: string
-  description: string
-  price: number
-  colors: { id: string; name: string; hex: string }[]
-  sizes: { id: string; name: string }[]
-}
-
 export default async function ProdutoPage({ params }: ProdutoPageProps) {
   const { slug } = await params
 
   const product = await prisma.product.findUnique({
     where: { slug },
-    include: { colors: true, sizes: true },
+    include: {
+      colors: true,
+      sizes: true,
+      images: {
+        orderBy: { createdAt: 'desc' },
+      },
+    },
   })
 
   if (!product) {
     return <div className="p-4 text-red-600">Produto não encontrado.</div>
   }
 
-  const typedProduct = product as ProductWithRelations
+  // ✅ pega imagem principal
+  const image = product.images?.[0]?.url || '/logo-artesanaio.jpeg'
 
   const productForClient: ProductDetailClientProps = {
-    id: typedProduct.id,
-    name: typedProduct.name,
-    slug: typedProduct.slug,
-    imageUrl: typedProduct.imageUrl,
-    description: typedProduct.description,
-    price: typedProduct.price,
-    colors: typedProduct.colors.map((c) => ({
-      id: c.id,
-      name: c.name,
-      hex: c.hex,
-    })),
-    sizes: typedProduct.sizes.map((s) => ({
-      id: s.id,
-      name: s.name,
-    })),
-  }
+  id: product.id,
+  name: product.name,
+  slug: product.slug,
+  images: product.images.map((img) => img.url),
+  description: product.description,
+  price: Number(product.price),
+
+  youtubeUrl: product.youtubeUrl, // ✅ AQUI
+
+  colors: product.colors.map((c) => ({
+    id: c.id,
+    name: c.name,
+    hex: c.hex,
+  })),
+  sizes: product.sizes.map((s) => ({
+    id: s.id,
+    name: s.name,
+  })),
+}
 
   return (
     <main className="w-full mx-auto p-6">

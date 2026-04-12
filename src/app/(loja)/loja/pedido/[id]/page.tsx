@@ -1,17 +1,16 @@
-// src/app/loja/pedido/[id]/page.tsx
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import React from 'react'
 import { PagarNovamenteButton } from '@/components/PagarNovamenteButton'
 
 interface PedidoPageProps {
-  params:  Promise<{ id: string }>
+  params: Promise<{ id: string }>
   searchParams?: Promise<{ status?: string }>
 }
 
 export default async function PedidoPage({ params, searchParams }: PedidoPageProps) {
- const { id } = await params
-const statusQuery = (await searchParams)?.status
+  const { id } = await params
+  const statusQuery = (await searchParams)?.status
 
   let order = await prisma.order.findUnique({
     where: { id },
@@ -37,45 +36,77 @@ const statusQuery = (await searchParams)?.status
   }
 
   const displayStatus = order.statusPagamento || statusQuery || 'success'
-  const totalProdutos = order.items?.reduce((acc, item) => acc + item.price * item.quantity, 0) ?? 0
+
+  // ✅ CORRIGIDO AQUI
+  const totalProdutos =
+    order.items?.reduce(
+      (acc, item) => acc + Number(item.price) * item.quantity,
+      0
+    ) ?? 0
+
   const frete = order.frete ?? 0
-  const totalGeral = totalProdutos + frete
+  const totalGeral = Number(totalProdutos) + Number(frete)
+
   const itemsForButton = order.items.map((item) => ({
     name: item.name,
     quantity: item.quantity,
-    price: item.price,
+    price: Number(item.price), // ✅ aqui também
   }))
 
   return (
     <main className="max-w-2xl mx-auto py-10 px-4">
-      <h1 className="text-2xl font-bold mb-4">Pedido #{order.id.slice(0, 8)}</h1>
+      <h1 className="text-2xl font-bold mb-4">
+        Pedido #{order.id.slice(0, 8)}
+      </h1>
 
       <div className="mb-6 p-4 border border-[var(--color-border)] rounded bg-[var(--color-bg-tertiary)]">
         <p className="text-lg font-semibold">
-          {statusText[displayStatus as keyof typeof statusText] || 'Aguardando pagamento...'}
+          {statusText[displayStatus as keyof typeof statusText] ||
+            'Aguardando pagamento...'}
         </p>
-        <p className="text-sm text-[var(--color-text-tertiary)] mt-1">Status atual: {order.statusPagamento || 'aguardando'}</p>
+        <p className="text-sm text-[var(--color-text-tertiary)] mt-1">
+          Status atual: {order.statusPagamento || 'aguardando'}
+        </p>
+
         {displayStatus !== 'approved' && (
-          <PagarNovamenteButton orderId={order.id} items={itemsForButton} frete={frete} />
+          <PagarNovamenteButton
+            orderId={order.id}
+            items={itemsForButton}
+            frete={Number(frete)}
+          />
         )}
       </div>
 
-      <h2 className="text-xl font-semibold mb-2">Itens do pedido:</h2>
+      <h2 className="text-xl font-semibold mb-2">
+        Itens do pedido:
+      </h2>
+
       <ul className="space-y-2">
         {order.items.map((item) => (
-          <li key={item.id} className="border border-[var(--color-border)] p-2 rounded">
+          <li
+            key={item.id}
+            className="border border-[var(--color-border)] p-2 rounded"
+          >
             <p className="font-medium">{item.name}</p>
+
             <p className="text-sm text-[var(--color-text-secondary)]">
-              Quantidade: {item.quantity} — Tamanho: {item.size} — Cor: {item.color}
+              Quantidade: {item.quantity} — Tamanho: {item.size} — Cor:{' '}
+              {item.color}
             </p>
-            <p className="text-sm font-semibold">R$ {(item.price * item.quantity).toFixed(2)}</p>
+
+            <p className="text-sm font-semibold">
+              R${' '}
+              {(Number(item.price) * item.quantity).toFixed(2)}
+            </p>
           </li>
         ))}
       </ul>
 
       <div className="mt-6 text-right font-bold text-lg">
-        Subtotal: R$ {totalProdutos.toFixed(2)}<br />
-        Frete: R$ {frete.toFixed(2)}<br />
+        Subtotal: R$ {totalProdutos.toFixed(2)}
+        <br />
+        Frete: R$ {frete.toFixed(2)}
+        <br />
         Total: R$ {totalGeral.toFixed(2)}
       </div>
     </main>
