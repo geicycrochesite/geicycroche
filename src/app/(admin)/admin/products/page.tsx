@@ -53,7 +53,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </thead>
           <tbody className="divide-y divide-[var(--color-border-light)] bg-[var(--color-admin-bg)]">
             {products.map((product) => {
-              const thumbnail = product.images?.[0]?.url || product.imageUrl
+              const thumbnail = product.images?.[0]?.url || ''
               return (
                 <tr key={product.id} className="hover:bg-[var(--color-bg-hover)]">
                   <td className="px-4 py-3">
@@ -62,7 +62,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                     </div>
                   </td>
                   <td className="px-4 py-3 font-medium text-[var(--color-admin-text)]">{product.name}</td>
-                  <td className="px-4 py-3 text-[var(--color-admin-text)]">R$ {product.price.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-[var(--color-admin-text)]">R$ {Number(product.price).toFixed(2)}</td>
                   <td className="px-4 py-3 text-[var(--color-admin-text)]">{product.stock}</td>
                   <td className="px-4 py-3 space-x-2">
                     <Link

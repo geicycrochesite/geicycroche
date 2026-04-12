@@ -15,7 +15,7 @@ type CreateProductRequest = {
   name: string
   slug: string
   price: number
-  imageUrl: string
+  imageUrl: string[]
   description: string
   colors?: ColorInput[]
   sizes?: SizeInput[]
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
   const body = (await req.json()) as CreateProductRequest
   const { name, slug, price, imageUrl, description, colors, sizes } = body
 
-  if (!name || !slug || !price || !imageUrl || !description) {
+  if (!name || !slug || !price || !imageUrl?.length || !description) {
     return NextResponse.json({ message: 'Dados incompletos' }, { status: 400 })
   }
 
@@ -35,7 +35,11 @@ export async function POST(req: Request) {
         name,
         slug,
         price,
-        imageUrl,
+        images: {
+            createMany: {
+              data: imageUrl.map((url) => ({ url })),
+            },
+          },
         description,
         colors: {
           create: colors?.map((color) => ({

@@ -35,7 +35,8 @@ export default function AdminLayout({
               <h1 className="text-xl font-bold">Administração</h1>
 
               <nav className="flex items-center gap-3 text-sm font-medium text-[var(--color-admin-text)]">
-                <Link href="/">Loja</Link>
+                <Link href="/">Site</Link>
+                <Link href="/loja">Loja</Link>
                 <Link href="/admin">Dashboard</Link>
                 <Link href="/admin/products">Produtos</Link>
                 <Link href="/admin/pedidos">Pedidos</Link>

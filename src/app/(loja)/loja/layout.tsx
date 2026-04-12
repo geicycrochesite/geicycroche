@@ -18,22 +18,24 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Artesanaio | Artesanato feito à mão",
+  title: "Geicy Crochê | Crochê com Estilo e Elegância",
   description:
-    "Pulseiras de miçanga, macramê artesanal e acessórios feitos à mão. Peças artesanais exclusivas e presentes criativos.",
+    "Peças em crochê feitas à mão com qualidade e sofisticação. Roupas, acessórios e itens para casa sob encomenda. Atendimento para todo o Brasil.",
   authors: [
     {
-      name: "Artesanaio",
-      url: "https://artesanaio.com.br",
+      name: "Geicy Crochê",
     },
   ],
   keywords: [
-    "artesanato feito à mão",
-    "pulseiras de miçanga",
-    "macramê artesanal",
-    "acessórios artesanais",
-    "presentes artesanais",
-    "artesanato personalizado",
+    "crochê artesanal",
+    "crochê sob encomenda",
+    "roupas de crochê",
+    "acessórios de crochê",
+    "jogo de banheiro crochê",
+    "crochê para casa",
+    "artesanato em crochê",
+    "crochê personalizado",
+    "crochê Brasil",
   ],
 };
 

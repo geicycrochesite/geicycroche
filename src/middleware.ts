@@ -31,7 +31,10 @@ export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname
 
   // Não deve bloquear rotas fora de /admin
-  if (!pathname.startsWith('/admin')) {
+  if (
+    !pathname.startsWith('/admin') &&
+    !pathname.startsWith('/api/admin')
+  ) {
     return NextResponse.next()
   }
 
@@ -55,5 +58,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/auth/:path*']
+  matcher: ['/admin/:path*', '/api/admin/:path*']
 }
