@@ -40,6 +40,7 @@ export default function AdminLayout({
                 <Link href="/admin">Dashboard</Link>
                 <Link href="/admin/products">Produtos</Link>
                 <Link href="/admin/pedidos">Pedidos</Link>
+                <Link href="/admin/blog-categories">Categorias Blog</Link>  
                 <Link href="/admin/etiquetas">Etiquetas</Link>
                 <LogoutButton />
               </nav>
