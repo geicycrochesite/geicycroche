@@ -50,11 +50,11 @@ const statusQuery = (await searchParams)?.status
     <main className="max-w-2xl mx-auto py-10 px-4">
       <h1 className="text-2xl font-bold mb-4">Pedido #{order.id.slice(0, 8)}</h1>
 
-      <div className="mb-6 p-4 border rounded bg-gray-50">
+      <div className="mb-6 p-4 border border-[var(--color-border)] rounded bg-[var(--color-bg-tertiary)]">
         <p className="text-lg font-semibold">
           {statusText[displayStatus as keyof typeof statusText] || 'Aguardando pagamento...'}
         </p>
-        <p className="text-sm text-gray-500 mt-1">Status atual: {order.statusPagamento || 'aguardando'}</p>
+        <p className="text-sm text-[var(--color-text-tertiary)] mt-1">Status atual: {order.statusPagamento || 'aguardando'}</p>
         {displayStatus !== 'approved' && (
           <PagarNovamenteButton orderId={order.id} items={itemsForButton} frete={frete} />
         )}
@@ -63,9 +63,9 @@ const statusQuery = (await searchParams)?.status
       <h2 className="text-xl font-semibold mb-2">Itens do pedido:</h2>
       <ul className="space-y-2">
         {order.items.map((item) => (
-          <li key={item.id} className="border p-2 rounded">
+          <li key={item.id} className="border border-[var(--color-border)] p-2 rounded">
             <p className="font-medium">{item.name}</p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-[var(--color-text-secondary)]">
               Quantidade: {item.quantity} — Tamanho: {item.size} — Cor: {item.color}
             </p>
             <p className="text-sm font-semibold">R$ {(item.price * item.quantity).toFixed(2)}</p>

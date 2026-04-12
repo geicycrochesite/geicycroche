@@ -61,20 +61,20 @@ export default function FreteCalculator({ quantidade }: Props) {
   }
 
   return (
-    <div className="mt-6 border p-4 rounded-md">
-      <h3 className="text-lg font-medium mb-2">Calcular Frete</h3>
+    <div className="mt-6 border border-[var(--color-border)] bg-[var(--color-bg-card)] p-4 rounded-md">
+      <h3 className="text-lg font-medium text-[var(--color-text-primary)] mb-2">Calcular Frete</h3>
       <div className="flex items-center gap-2">
         <input
           type="text"
           placeholder="Digite seu CEP"
           value={cep}
           onChange={(e) => setCep(e.target.value.replace(/\D/g, ''))}
-          className="border rounded px-3 py-2 w-full"
+          className="border border-[var(--color-admin-border)] bg-[var(--color-bg-tertiary)] text-[var(--color-admin-text)] rounded px-3 py-2 w-full focus:ring-2 focus:ring-[var(--color-accent)] outline-none"
           maxLength={8}
         />
         <button
           onClick={handleCalculateFrete}
-          className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800"
+          className="bg-[var(--color-success)] text-[var(--color-text-primary)] px-4 py-2 rounded hover:bg-[var(--color-success)]/80 disabled:opacity-50"
           disabled={loading}
         >
           {loading ? 'Calculando...' : 'Calcular'}
@@ -83,10 +83,10 @@ export default function FreteCalculator({ quantidade }: Props) {
 
       {fretes && fretes.length > 0 && (
         <div className="mt-4">
-          <h4 className="font-semibold mb-2">Opções de Frete:</h4>
+          <h4 className="font-semibold text-[var(--color-text-primary)] mb-2">Opções de Frete:</h4>
           <ul className="space-y-1">
             {fretes.map((f) => (
-              <li key={f.id} className="text-sm text-gray-700">
+              <li key={f.id} className="text-sm text-[var(--color-text-secondary)]">
                 <strong>{f.name}</strong>: R$ {parseFloat(f.price).toFixed(2)} — entrega em {f.delivery_time} dias úteis
               </li>
             ))}

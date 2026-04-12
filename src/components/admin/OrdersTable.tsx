@@ -7,42 +7,42 @@ type Props = {
 
 export function OrdersTable({ orders }: Props) {
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div className="overflow-hidden rounded-xl border border-[var(--color-admin-border)] bg-[var(--color-admin-bg)] shadow-sm">
       <div className="px-4 py-4 sm:px-6">
         <h2 className="text-lg font-semibold">Últimos pedidos</h2>
       </div>
-      <table className="w-full min-w-full divide-y divide-slate-200 text-sm">
-        <thead className="bg-slate-50">
+      <table className="w-full min-w-full divide-y divide-[var(--color-admin-border)] text-sm">
+        <thead className="bg-[var(--color-bg-tertiary)]">
           <tr>
-            <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">ID</th>
-            <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">Cliente</th>
-            <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">Valor</th>
-            <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">Status</th>
-            <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-slate-600">Data</th>
+            <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-[var(--color-text-secondary)]">ID</th>
+            <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-[var(--color-text-secondary)]">Cliente</th>
+            <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-[var(--color-text-secondary)]">Valor</th>
+            <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-[var(--color-text-secondary)]">Status</th>
+            <th className="px-4 py-2 text-left text-xs font-semibold uppercase tracking-wide text-[var(--color-text-secondary)]">Data</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100 bg-white">
+        <tbody className="divide-y divide-[var(--color-border-light)] bg-[var(--color-admin-bg)]">
           {orders.map((order) => (
             <tr key={order.id}>
-              <td className="px-4 py-3 text-xs text-slate-700">{order.id.slice(0, 8)}</td>
-              <td className="px-4 py-3 text-xs text-slate-700">{order.fullName}</td>
-              <td className="px-4 py-3 text-xs font-semibold text-slate-800">R${order.total.toFixed(2)}</td>
+              <td className="px-4 py-3 text-xs text-[var(--color-admin-text)]">{order.id.slice(0, 8)}</td>
+              <td className="px-4 py-3 text-xs text-[var(--color-admin-text)]">{order.fullName}</td>
+              <td className="px-4 py-3 text-xs font-semibold text-[var(--color-admin-text)]">R${order.total.toFixed(2)}</td>
               <td className="px-4 py-3 text-xs">
                 <span
                   className={`rounded-full px-2 py-1 font-medium ${
                     order.statusPagamento === 'PAGO'
-                      ? 'bg-emerald-100 text-emerald-700'
+                      ? 'bg-[var(--color-success)]/20 text-[var(--color-success)]'
                       : order.statusPagamento === 'ENVIADO'
-                      ? 'bg-blue-100 text-blue-700'
+                      ? 'bg-[var(--color-info)]/20 text-[var(--color-info)]'
                       : order.statusPagamento === 'CANCELADO'
-                      ? 'bg-rose-100 text-rose-700'
-                      : 'bg-amber-100 text-amber-700'
+                      ? 'bg-[var(--color-error)]/20 text-[var(--color-error)]'
+                      : 'bg-[var(--color-accent)]/20 text-[var(--color-accent)]'
                   }`}
                 >
                   {order.statusPagamento || 'PENDENTE'}
                 </span>
               </td>
-              <td className="px-4 py-3 text-xs text-slate-500">{format(order.createdAt, 'dd/MM/yyyy')}</td>
+              <td className="px-4 py-3 text-xs text-[var(--color-text-tertiary)]">{format(order.createdAt, 'dd/MM/yyyy')}</td>
             </tr>
           ))}
         </tbody>

@@ -106,7 +106,7 @@ export default function Page() {
           realmente especial.
         </p>
 
-        <div className="bg-[#2F8F5B] text-white rounded-2xl p-6 text-center">
+        <div className="bg-[var(--color-success)] text-[var(--color-text-primary)] rounded-2xl p-6 text-center">
           <p className="text-lg font-semibold mb-3">
             🎯 Pronto para surpreender de verdade?
           </p>

@@ -95,7 +95,7 @@ export default function Page() {
           depois — ele pode não estar disponível novamente.
         </p>
 
-        <div className="bg-[#2F8F5B] text-white rounded-2xl p-6 text-center">
+        <div className="bg-[var(--color-success)] text-[var(--color-text-primary)] rounded-2xl p-6 text-center">
           <p className="text-lg font-semibold mb-3">
             🧶 Tenha uma peça única em macramê
           </p>

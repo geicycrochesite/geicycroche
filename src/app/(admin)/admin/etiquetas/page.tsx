@@ -91,8 +91,8 @@ export default function AdminLabelsPage() {
         📦 Shopee Express Label Printer
       </h1>
 
-      <label className="flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-8 cursor-pointer hover:bg-gray-50">
-        <span className="text-gray-700">Clique ou arraste o PDF aqui</span>
+      <label className="flex flex-col items-center justify-center border-2 border-dashed border-[var(--color-admin-border)] rounded-xl p-8 cursor-pointer hover:bg-[var(--color-bg-hover)]">
+        <span className="text-[var(--color-admin-text)]">Clique ou arraste o PDF aqui</span>
         <input
           type="file"
           accept="application/pdf"
@@ -101,7 +101,7 @@ export default function AdminLabelsPage() {
         />
       </label>
 
-      {loading && <p className="text-center text-gray-600">Processando...</p>}
+      {loading && <p className="text-center text-[var(--color-text-secondary)]">Processando...</p>}
 
       {labelParts.length > 0 && (
         <div>
@@ -112,7 +112,7 @@ export default function AdminLabelsPage() {
                 key={index}
                 src={imageSrc}
                 alt={`Etiqueta ${index + 1}`}
-                className="w-[200px] border border-gray-300 rounded"
+                className="w-[200px] border border-[var(--color-admin-border)] rounded"
               />
             ))}
           </div>
@@ -128,7 +128,7 @@ export default function AdminLabelsPage() {
 
           <button
             onClick={handlePrint}
-            className="mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded w-full transition"
+            className="mt-4 px-6 py-2 bg-[var(--color-info)] hover:bg-[var(--color-info)]/80 text-[var(--color-text-primary)] font-medium rounded w-full transition"
           >
             🖨️ Imprimir Etiquetas
           </button>

@@ -7,7 +7,7 @@ export function WhatsAppButton() {
       href="https://wa.me/5521986369426"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-4 right-4 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 transition-colors z-50"
+      className="fixed bottom-4 right-4 bg-[var(--color-success)] text-[var(--color-text-primary)] p-3 rounded-full shadow-lg hover:opacity-90 transition-colors z-50"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

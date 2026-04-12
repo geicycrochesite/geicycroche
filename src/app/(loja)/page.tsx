@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function HomePage() {
   return (
-    <main className="w-full bg-[#000000] text-[#EADCC6]">
+    <main className="w-full bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
 
       {/* HERO */}
       <section className="relative w-full min-h-[86vh] flex items-center py-8">
@@ -18,7 +18,7 @@ export default function HomePage() {
         />
 
         {/* OVERLAY */}
-        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 bg-[var(--color-bg-primary)]/30" />
 
         {/* CONTENT */}
         <div className="relative z-10 max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
@@ -41,7 +41,7 @@ export default function HomePage() {
               className="mb-6"
             />
 
-            <p className="text-sm md:text-base max-w-md mb-8 text-[#D6C7A8]">
+            <p className="text-sm md:text-base max-w-md mb-8 text-[var(--color-text-secondary)]">
               Peças exclusivas feitas à mão com amor e dedicação. Roupas,
               acessórios e itens para casa que transformam seu dia a dia
               com elegância.
@@ -49,7 +49,7 @@ export default function HomePage() {
 
             <a
               href="https://wa.me/5521986369426"
-              className="inline-block px-6 py-3 border border-[#C8A96A] text-[#C8A96A] hover:bg-[#C8A96A] hover:text-black transition rounded"
+              className="inline-block px-6 py-3 border border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-bg-primary)] transition rounded"
             >
               Conheça nossas peças
             </a>
@@ -70,23 +70,23 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-6">
 
-            <div className="bg-[#111] p-6 rounded-xl border border-[#222] hover:border-[#C8A96A] transition">
+            <div className="bg-[var(--color-bg-tertiary)] p-6 rounded-xl border border-[var(--color-bg-hover)] hover:border-[var(--color-accent)] transition">
               <h3 className="text-xl mb-2">Roupas em Crochê</h3>
-              <p className="text-sm text-[#B8A98A]">
+              <p className="text-sm text-[var(--color-text-tertiary)]">
                 Saídas de praia, blusas e peças exclusivas feitas sob medida.
               </p>
             </div>
 
-            <div className="bg-[#111] p-6 rounded-xl border border-[#222] hover:border-[#C8A96A] transition">
+            <div className="bg-[var(--color-bg-tertiary)] p-6 rounded-xl border border-[var(--color-bg-hover)] hover:border-[var(--color-accent)] transition">
               <h3 className="text-xl mb-2">Acessórios</h3>
-              <p className="text-sm text-[#B8A98A]">
+              <p className="text-sm text-[var(--color-text-tertiary)]">
                 Bolsas, cintos, lenços e detalhes únicos para seu estilo.
               </p>
             </div>
 
-            <div className="bg-[#111] p-6 rounded-xl border border-[#222] hover:border-[#C8A96A] transition">
+            <div className="bg-[var(--color-bg-tertiary)] p-6 rounded-xl border border-[var(--color-bg-hover)] hover:border-[var(--color-accent)] transition">
               <h3 className="text-xl mb-2">Itens para Casa</h3>
-              <p className="text-sm text-[#B8A98A]">
+              <p className="text-sm text-[var(--color-text-tertiary)]">
                 Jogos de banheiro, cozinha, passadeiras e decoração artesanal.
               </p>
             </div>
@@ -96,14 +96,14 @@ export default function HomePage() {
       </section>
 
       {/* SOBRE */}
-      <section className="py-20 px-6 bg-[#0F0F0F] text-center">
+      <section className="py-20 px-6 bg-[var(--color-bg-tertiary)] text-center">
         <div className="max-w-4xl mx-auto">
 
           <h2 className="text-3xl md:text-4xl mb-6">
             Crochê com Qualidade e Sofisticação
           </h2>
 
-          <p className="text-[#CFC2A8] leading-relaxed">
+          <p className="text-[var(--color-text-muted)] leading-relaxed">
             Cada peça é feita manualmente, com atenção aos mínimos detalhes.
             Trabalhamos com materiais selecionados para garantir beleza,
             durabilidade e exclusividade em cada criação.
@@ -121,13 +121,13 @@ export default function HomePage() {
             Faça sua encomenda personalizada
           </h2>
 
-          <p className="mb-8 text-[#CFC2A8]">
+          <p className="mb-8 text-[var(--color-text-muted)]">
             Fale direto no WhatsApp e peça sua peça sob medida.
           </p>
 
           <a
             href="https://wa.me/5521986369426"
-            className="inline-block px-8 py-4 text-black bg-[#C8A96A] hover:bg-[#b8954f] transition rounded"
+            className="inline-block px-8 py-4 text-[var(--color-bg-primary)] bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] transition rounded"
           >
             Pedir no WhatsApp
           </a>

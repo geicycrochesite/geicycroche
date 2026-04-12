@@ -18,7 +18,7 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
 
   if (!product) {
     return (
-      <div className="rounded-3xl border border-rose-200 bg-rose-50 p-8 text-rose-700 shadow-sm">
+      <div className="rounded-3xl border border-[var(--color-error)] bg-[var(--color-error)]/20 p-8 text-[var(--color-error)] shadow-sm">
         Produto não encontrado.
       </div>
     )

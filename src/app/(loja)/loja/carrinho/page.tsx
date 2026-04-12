@@ -39,15 +39,15 @@ export default function CarrinhoPage() {
               <Link href={`/loja/produto/${item.slug}`}>
                 <h2 className="text-lg font-semibold hover:underline">{item.name}</h2>
               </Link>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-[var(--color-text-secondary)]">
                 Cor: <span className="font-medium">{item.color.name}</span>{' '}
                 <span
                   className="inline-block w-4 h-4 rounded-full border ml-1"
                   style={{ backgroundColor: item.color.hex }}
                 />
               </p>
-              <p className="text-sm text-gray-600">Tamanho: {item.size.name}</p>
-              <p className="mt-1 text-green-700 font-bold">R$ {(item.price * item.quantity).toFixed(2)}</p>
+              <p className="text-sm text-[var(--color-text-secondary)]">Tamanho: {item.size.name}</p>
+              <p className="mt-1 text-[var(--color-success)] font-bold">R$ {(item.price * item.quantity).toFixed(2)}</p>
             </div>
             <div className="flex flex-col items-end gap-2">
               <p className="text-sm">Qtd: {item.quantity}</p>
@@ -68,7 +68,7 @@ export default function CarrinhoPage() {
         <p className="mb-8 text-xl font-semibold">Total: R$ {totalPrice.toFixed(2)}</p>
         <Link
           href="/loja/checkout"
-          className="mt-8 bg-green-700 text-white px-6 py-3 rounded-md hover:bg-green-800 transition"
+          className="mt-8 bg-[var(--color-success)] text-[var(--color-text-primary)] px-6 py-3 rounded-md hover:bg-[var(--color-success)]/80 transition"
         >
           Finalizar Compra
         </Link>

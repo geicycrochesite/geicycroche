@@ -17,14 +17,14 @@ export default function CheckoutPage() {
       <h1 className="text-2xl font-bold my-4">Finalizar Pedido</h1>
 
       {items.length === 0 ? (
-        <p className="text-gray-500">Seu carrinho está vazio.</p>
+        <p className="text-[var(--color-text-tertiary)]">Seu carrinho está vazio.</p>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="order-2 lg:order-1">
             <CheckoutForm />
           </div>
 
-          <div className="order-1 lg:order-2 bg-white rounded shadow p-4">
+          <div className="order-1 lg:order-2 bg-[var(--color-admin-bg)] rounded shadow p-4">
             <h2 className="text-lg font-semibold mb-4">Resumo do Pedido</h2>
             {items.map((item) => (
               <div

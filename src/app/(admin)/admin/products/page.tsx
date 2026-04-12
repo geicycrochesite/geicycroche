@@ -30,44 +30,44 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold">Produtos</h1>
-          <p className="text-sm text-slate-600">Gerencie o catálogo de produtos, imagens, categorias e vídeo do YouTube.</p>
+          <p className="text-sm text-[var(--color-text-secondary)]">Gerencie o catálogo de produtos, imagens, categorias e vídeo do YouTube.</p>
         </div>
         <Link
           href="/admin/products/new"
-          className="inline-flex items-center justify-center rounded-3xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700"
+          className="inline-flex items-center justify-center rounded-3xl bg-[var(--color-bg-primary)] px-5 py-3 text-sm font-semibold text-[var(--color-text-primary)] transition hover:bg-[var(--color-bg-hover)]"
         >
           + Novo produto
         </Link>
       </div>
 
-      <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-        <table className="min-w-full divide-y divide-slate-200 text-sm">
-          <thead className="bg-slate-50">
+      <div className="overflow-hidden rounded-3xl border border-[var(--color-admin-border)] bg-[var(--color-admin-bg)] shadow-sm">
+        <table className="min-w-full divide-y divide-[var(--color-admin-border)] text-sm">
+          <thead className="bg-[var(--color-bg-tertiary)]">
             <tr>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Imagem</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Produto</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Preço</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Estoque</th>
-              <th className="px-4 py-3 text-left font-semibold text-slate-600">Ações</th>
+              <th className="px-4 py-3 text-left font-semibold text-[var(--color-text-secondary)]">Imagem</th>
+              <th className="px-4 py-3 text-left font-semibold text-[var(--color-text-secondary)]">Produto</th>
+              <th className="px-4 py-3 text-left font-semibold text-[var(--color-text-secondary)]">Preço</th>
+              <th className="px-4 py-3 text-left font-semibold text-[var(--color-text-secondary)]">Estoque</th>
+              <th className="px-4 py-3 text-left font-semibold text-[var(--color-text-secondary)]">Ações</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 bg-white">
+          <tbody className="divide-y divide-[var(--color-border-light)] bg-[var(--color-admin-bg)]">
             {products.map((product) => {
               const thumbnail = product.images?.[0]?.url || product.imageUrl
               return (
-                <tr key={product.id} className="hover:bg-slate-50">
+                <tr key={product.id} className="hover:bg-[var(--color-bg-hover)]">
                   <td className="px-4 py-3">
-                    <div className="h-16 w-20 overflow-hidden rounded-2xl bg-slate-100">
+                    <div className="h-16 w-20 overflow-hidden rounded-2xl bg-[var(--color-bg-tertiary)]">
                       <Image src={thumbnail} alt={product.name} width={120} height={80} className="h-full w-full object-cover" />
                     </div>
                   </td>
-                  <td className="px-4 py-3 font-medium text-slate-800">{product.name}</td>
-                  <td className="px-4 py-3 text-slate-700">R$ {product.price.toFixed(2)}</td>
-                  <td className="px-4 py-3 text-slate-700">{product.stock}</td>
+                  <td className="px-4 py-3 font-medium text-[var(--color-admin-text)]">{product.name}</td>
+                  <td className="px-4 py-3 text-[var(--color-admin-text)]">R$ {product.price.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-[var(--color-admin-text)]">{product.stock}</td>
                   <td className="px-4 py-3 space-x-2">
                     <Link
                       href={`/admin/products/${product.id}/edit`}
-                      className="rounded-2xl border border-slate-200 bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-200"
+                      className="rounded-2xl border border-[var(--color-admin-border)] bg-[var(--color-bg-tertiary)] px-3 py-2 text-xs font-semibold text-[var(--color-admin-text)] transition hover:bg-[var(--color-bg-hover)]"
                     >
                       Editar
                     </Link>
@@ -80,18 +80,18 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </table>
       </div>
 
-      <div className="flex items-center justify-between rounded-3xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
-        <p className="text-sm text-slate-500">Página {page} de {totalPages}</p>
+      <div className="flex items-center justify-between rounded-3xl border border-[var(--color-admin-border)] bg-[var(--color-admin-bg)] px-4 py-3 shadow-sm">
+        <p className="text-sm text-[var(--color-text-tertiary)]">Página {page} de {totalPages}</p>
         <div className="flex items-center gap-3">
           <Link
             href={`/admin/products?page=${Math.max(1, page - 1)}`}
-            className={`rounded-2xl px-4 py-2 text-sm font-semibold transition ${page === 1 ? 'cursor-not-allowed bg-slate-100 text-slate-400' : 'bg-slate-900 text-white hover:bg-slate-700'}`}
+            className={`rounded-2xl px-4 py-2 text-sm font-semibold transition ${page === 1 ? 'cursor-not-allowed bg-[var(--color-bg-tertiary)] text-[var(--color-text-tertiary)]' : 'bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] hover:bg-[var(--color-bg-hover)]'}`}
           >
             Anterior
           </Link>
           <Link
             href={`/admin/products?page=${Math.min(totalPages, page + 1)}`}
-            className={`rounded-2xl px-4 py-2 text-sm font-semibold transition ${page >= totalPages ? 'cursor-not-allowed bg-slate-100 text-slate-400' : 'bg-slate-900 text-white hover:bg-slate-700'}`}
+            className={`rounded-2xl px-4 py-2 text-sm font-semibold transition ${page >= totalPages ? 'cursor-not-allowed bg-[var(--color-bg-tertiary)] text-[var(--color-text-tertiary)]' : 'bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] hover:bg-[var(--color-bg-hover)]'}`}
           >
             Próximo
           </Link>

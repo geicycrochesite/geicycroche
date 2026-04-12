@@ -159,7 +159,7 @@ export default function CheckoutForm() {
         <p className="font-semibold">Total: R$ {totalGeral.toFixed(2)}</p>
       </div>
 
-      <button type="submit" className="bg-green-700 text-white py-2 px-4 rounded hover:bg-green-800">
+      <button type="submit" className="bg-[var(--color-success)] text-[var(--color-text-primary)] py-2 px-4 rounded hover:bg-[var(--color-success)]/80">
         Finalizar Pedido
       </button>
     </form>
