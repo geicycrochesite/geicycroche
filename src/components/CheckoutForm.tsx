@@ -57,6 +57,10 @@ export default function CheckoutForm() {
   }, [zipCode, items])
 
   const onSubmit = async (data: CheckoutFormData) => {
+    console.log('Iniciando onSubmit, dados:', data)
+    console.log('Itens no carrinho:', items)
+    console.log('Frete:', frete)
+
     if (items.length === 0) {
       toast.error('Seu carrinho está vazio')
       return
@@ -68,6 +72,7 @@ export default function CheckoutForm() {
     }
 
     try {
+      console.log('Enviando requisição para /api/orders')
       // Criação do pedido
       const res = await fetch('/api/orders', {
         method: 'POST',
@@ -75,12 +80,18 @@ export default function CheckoutForm() {
         headers: { 'Content-Type': 'application/json' },
       })
 
+      console.log('Resposta de /api/orders:', res.status, res.statusText)
+
       if (!res.ok) {
-        toast.error('Erro ao criar pedido')
+        const errorData = await res.json()
+        console.error('Erro em /api/orders:', errorData)
+        toast.error(errorData?.error || 'Erro ao criar pedido')
         return
       }
 
-      const { orderId } = await res.json()
+      const orderData = await res.json()
+      console.log('Dados do pedido criado:', orderData)
+      const { orderId } = orderData
 
       // Itens formatados para Mercado Pago
       const formattedItems = [
@@ -96,6 +107,9 @@ export default function CheckoutForm() {
         },
       ]
 
+      console.log('Itens formatados para MP:', formattedItems)
+      console.log('Enviando requisição para /api/mercado-pago/preference')
+
       // Criação da preferência do Mercado Pago
       const prefRes = await fetch('/api/mercado-pago/preference', {
         method: 'POST',
@@ -103,17 +117,23 @@ export default function CheckoutForm() {
         headers: { 'Content-Type': 'application/json' },
       })
 
+      console.log('Resposta de /api/mercado-pago/preference:', prefRes.status, prefRes.statusText)
+
       if (!prefRes.ok) {
+        const errorData = await prefRes.json()
+        console.error('Erro em /api/mercado-pago/preference:', errorData)
         toast.error('Erro ao redirecionar para o pagamento.')
         return
       }
 
-      const { init_point } = await prefRes.json()
+      const prefData = await prefRes.json()
+      console.log('Dados da preferência:', prefData)
+      const { init_point } = prefData
 
-      clearCart()
+      console.log('Limpando carrinho e redirecionando para:', init_point)
       router.push(init_point)
     } catch (err) {
-      console.error(err)
+      console.error('Erro geral no onSubmit:', err)
       toast.error('Erro ao finalizar o pedido')
     }
   }

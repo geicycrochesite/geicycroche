@@ -1,10 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { CartProvider } from '@/context/CartContext';
 import "./globals.css";
-import Header from "@/components/Header";
-import { Toaster } from "react-hot-toast";
-import Footer from "@/components/Footer";
 import CategoriasMenu from "@/components/CategoriasMenu";
 
 const geistSans = Geist({
@@ -55,13 +51,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Toaster position="top-right" reverseOrder={false} />
-         <CartProvider>
-          
-          <CategoriasMenu />
-          {children}
-          
-          </CartProvider>
+        <CategoriasMenu />
+        {children}
       </body>
     </html>
   );

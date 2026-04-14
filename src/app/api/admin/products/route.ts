@@ -31,11 +31,13 @@ type AdminProductCreateRequest = {
   categories: string[]
   youtubeUrl?: string | null
   imageUrls: string[]
+  colors?: { name: string; hex: string }[]
+  sizes?: { name: string }[]
 }
 
 export async function POST(request: Request) {
   const body = (await request.json()) as AdminProductCreateRequest
-  const { name, slug, description, price, stock, materials, handmade, categories, youtubeUrl, imageUrls } = body
+  const { name, slug, description, price, stock, materials, handmade, categories, youtubeUrl, imageUrls, colors, sizes } = body
 
   if (!name || !slug || !description || typeof price !== 'number' || typeof stock !== 'number' || !Array.isArray(imageUrls) || imageUrls.length === 0) {
     return NextResponse.json({ message: 'Dados do produto incompletos.' }, { status: 400 })
@@ -63,10 +65,25 @@ export async function POST(request: Request) {
         data: imageUrls.map((url) => ({ url })),
       },
     },
+
+    colors: colors && colors.length > 0 ? {
+      create: colors.map((color) => ({
+        name: color.name,
+        hex: color.hex,
+      })),
+    } : undefined,
+
+    sizes: sizes && sizes.length > 0 ? {
+      create: sizes.map((size) => ({
+        name: size.name,
+      })),
+    } : undefined,
   },
   include: {
     categories: true,
     images: true,
+    colors: true,
+    sizes: true,
   },
 })
 

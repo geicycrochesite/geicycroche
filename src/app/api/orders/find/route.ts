@@ -1,5 +1,31 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url)
+  const orderId = searchParams.get('orderId')
+
+  if (!orderId) {
+    return NextResponse.json({ message: 'orderId é obrigatório' }, { status: 400 })
+  }
+
+  try {
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+      include: {
+        items: true,
+      },
+    })
+
+    if (!order) {
+      return NextResponse.json({ message: 'Pedido não encontrado' }, { status: 404 })
+    }
+
+    return NextResponse.json(order)
+  } catch (error) {
+    return NextResponse.json({ message: 'Erro ao buscar pedido', error }, { status: 500 })
+  }
+}
 
 export async function POST(req: Request) {
   const { email, cpf } = await req.json()

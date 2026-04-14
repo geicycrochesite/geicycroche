@@ -3,10 +3,12 @@
 import { useState } from 'react'
 import Link from "next/link"
 import Image from "next/image"
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ShoppingCart } from 'lucide-react'
+import { useCart } from '@/context/CartContext'
 
 export default function Header() {
   const [open, setOpen] = useState(false)
+  const { totalItems } = useCart()
 
   return (
     <header className="w-full fixed top-0 z-50 bg-[var(--color-bg-primary)]/90 backdrop-blur">
@@ -25,6 +27,15 @@ export default function Header() {
           <Link href="/sobre">Sobre</Link>
           <Link href="/pecas">Peças</Link>
           <Link href="/contato">Contato</Link>
+          <Link href="/loja/carrinho" className="inline-flex items-center gap-2">
+            <ShoppingCart className="w-4 h-4" />
+            Carrinho
+            {totalItems > 0 && (
+              <span className="inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-[var(--color-accent)] px-2 text-[0.65rem] font-semibold text-[var(--color-bg-primary)]">
+                {totalItems}
+              </span>
+            )}
+          </Link>
         </nav>
 
         <a
@@ -48,6 +59,7 @@ export default function Header() {
           <Link href="/">Início</Link>
           <Link href="/sobre">Sobre</Link>
           <Link href="/pecas">Peças</Link>
+          <Link href="/loja/carrinho">Carrinho</Link>
           <Link href="/contato">Contato</Link>
         </div>
       )}

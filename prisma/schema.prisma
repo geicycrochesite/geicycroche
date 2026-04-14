@@ -192,3 +192,26 @@ model PostSEO {
   metaDesc    String?
   keywords    String?
 }
+
+model CustomPage {
+  id        String @id @default(cuid())
+  storeId   String
+
+  slug      String   // "sobre" | "personalizados"
+  title     String
+
+  // SOBRE
+  introText String?
+  section1Title String?
+  section1Text  String?
+
+  // FAQ PERSONALIZADOS
+  faq       Json?
+
+  coverImage String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([storeId, slug])
+}

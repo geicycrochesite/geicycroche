@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
 import Header from "@/components/Header";
+import { CartProvider } from '@/context/CartContext';
 import { Toaster } from "react-hot-toast";
 import Footer from "@/components/Footer";
 
@@ -79,20 +80,22 @@ export default function RootLayout({
       >
         <Toaster position="top-right" reverseOrder={false} />
 
-        <div className="flex flex-col min-h-screen">
+        <CartProvider>
+          <div className="flex flex-col min-h-screen">
 
-          {/* HEADER */}
-          <Header />
+            {/* HEADER */}
+            <Header />
 
-          {/* CONTEÚDO */}
-          <main className="flex-1 w-full pt-20 bg-black">
-            {children}
-          </main>
+            {/* CONTEÚDO */}
+            <main className="flex-1 w-full pt-20 bg-black">
+              {children}
+            </main>
 
-          {/* FOOTER */}
-          <Footer />
+            {/* FOOTER */}
+            <Footer />
 
-        </div>
+          </div>
+        </CartProvider>
       </body>
     </html>
   );

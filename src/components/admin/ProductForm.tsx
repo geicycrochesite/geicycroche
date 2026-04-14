@@ -29,6 +29,8 @@ type AdminProduct = {
   youtubeUrl: string | null
   categories: Category[]
   images: ProductImage[]
+  colors: { id: string; name: string; hex: string }[]
+  sizes: { id: string; name: string }[]
 }
 
 type ProductFormData = {
@@ -41,6 +43,8 @@ type ProductFormData = {
   handmade: boolean
   categories: string[]
   youtubeUrl: string
+  colors: { name: string; hex: string }[]
+  sizes: { name: string }[]
 }
 
 type Props = {
@@ -69,6 +73,8 @@ export default function ProductForm({ mode, categories, product }: Props) {
   const [removedImageIds, setRemovedImageIds] = useState<string[]>([])
   const [isUploading, setIsUploading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [colors, setColors] = useState<{ name: string; hex: string }[]>(product?.colors?.map(c => ({ name: c.name, hex: c.hex })) ?? [])
+  const [sizes, setSizes] = useState<{ name: string }[]>(product?.sizes?.map(s => ({ name: s.name })) ?? [])
 
   const defaultValues: ProductFormData = {
     name: product?.name ?? '',
@@ -80,6 +86,8 @@ export default function ProductForm({ mode, categories, product }: Props) {
     handmade: product?.handmade ?? true,
     categories: product?.categories.map((category) => category.id) ?? [],
     youtubeUrl: product?.youtubeUrl ?? '',
+    colors: product?.colors?.map(c => ({ name: c.name, hex: c.hex })) ?? [],
+    sizes: product?.sizes?.map(s => ({ name: s.name })) ?? [],
   }
 
   const { register, handleSubmit, watch, setValue } = useForm<ProductFormData>({ defaultValues })
@@ -180,6 +188,8 @@ export default function ProductForm({ mode, categories, product }: Props) {
       youtubeUrl: normalizedYoutubeUrl,
       imageUrls: uploadedImageUrls,
       removeImageIds: removedImageIds,
+      colors: colors,
+      sizes: sizes,
     }
 
     setIsSaving(true)
@@ -384,6 +394,91 @@ export default function ProductForm({ mode, categories, product }: Props) {
             <input {...register('handmade')} type="checkbox" className="h-4 w-4 rounded border-[var(--color-admin-border)] text-[var(--color-bg-primary)] focus:ring-[var(--color-bg-primary)]" />
             Produto artesanal
           </label>
+        </section>
+
+        <section className="rounded-3xl border border-[var(--color-admin-border)] bg-[var(--color-admin-bg)] p-6 shadow-sm">
+          <h2 className="text-lg font-semibold">Cores e Tamanhos</h2>
+          <div className="mt-6 space-y-6">
+            <div>
+              <label className="block text-sm font-medium text-[var(--color-admin-text)] mb-2">Cores</label>
+              <div className="space-y-2">
+                {colors.map((color, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      placeholder="Nome da cor"
+                      value={color.name}
+                      onChange={(e) => {
+                        const newColors = [...colors]
+                        newColors[index].name = e.target.value
+                        setColors(newColors)
+                      }}
+                      className="flex-1 rounded-2xl border border-[var(--color-admin-border)] bg-[var(--color-bg-tertiary)] px-4 py-2 text-sm outline-none transition focus:border-[var(--color-accent)]"
+                    />
+                    <input
+                      type="color"
+                      value={color.hex}
+                      onChange={(e) => {
+                        const newColors = [...colors]
+                        newColors[index].hex = e.target.value
+                        setColors(newColors)
+                      }}
+                      className="w-12 h-10 rounded border"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setColors(colors.filter((_, i) => i !== index))}
+                      className="rounded-2xl bg-[var(--color-error)] px-3 py-2 text-sm font-semibold text-white hover:bg-red-700"
+                    >
+                      Remover
+                    </button>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setColors([...colors, { name: '', hex: '#000000' }])}
+                  className="rounded-2xl bg-[var(--color-bg-primary)] px-4 py-2 text-sm font-semibold text-[var(--color-text-primary)] hover:bg-[var(--color-bg-hover)]"
+                >
+                  + Adicionar Cor
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-[var(--color-admin-text)] mb-2">Tamanhos</label>
+              <div className="space-y-2">
+                {sizes.map((size, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      placeholder="Nome do tamanho"
+                      value={size.name}
+                      onChange={(e) => {
+                        const newSizes = [...sizes]
+                        newSizes[index].name = e.target.value
+                        setSizes(newSizes)
+                      }}
+                      className="flex-1 rounded-2xl border border-[var(--color-admin-border)] bg-[var(--color-bg-tertiary)] px-4 py-2 text-sm outline-none transition focus:border-[var(--color-accent)]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setSizes(sizes.filter((_, i) => i !== index))}
+                      className="rounded-2xl bg-[var(--color-error)] px-3 py-2 text-sm font-semibold text-white hover:bg-red-700"
+                    >
+                      Remover
+                    </button>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={() => setSizes([...sizes, { name: '' }])}
+                  className="rounded-2xl bg-[var(--color-bg-primary)] px-4 py-2 text-sm font-semibold text-[var(--color-text-primary)] hover:bg-[var(--color-bg-hover)]"
+                >
+                  + Adicionar Tamanho
+                </button>
+              </div>
+            </div>
+          </div>
         </section>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
