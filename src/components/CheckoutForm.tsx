@@ -150,8 +150,8 @@ export default function CheckoutForm() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="card">
-        <h2 className="title">Finalizar Pedido</h2>
+      <div className="rounded-3xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-6">
+        <h2 className="text-lg font-semibold mb-4">Finalizar Pedido</h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* DADOS PESSOAIS */}
@@ -166,9 +166,9 @@ export default function CheckoutForm() {
                 {...register('fullName')}
                 id="fullName"
                 placeholder="Nome completo"
-                className="input"
+                className="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] px-4 py-3 text-sm"
               />
-              {errors.fullName && <p className="mt-1 text-sm text-error">{errors.fullName.message}</p>}
+              {errors.fullName && <p className="mt-1 text-sm text-[var(--color-error)]">{errors.fullName.message}</p>}
             </div>
 
             <div>
@@ -180,9 +180,9 @@ export default function CheckoutForm() {
                 id="email"
                 type="email"
                 placeholder="seu@email.com"
-                className="input"
+                className="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] px-4 py-3 text-sm"
               />
-              {errors.email && <p className="mt-1 text-sm text-error">{errors.email.message}</p>}
+              {errors.email && <p className="mt-1 text-sm text-[var(--color-error)]">{errors.email.message}</p>}
             </div>
 
             <div>
@@ -193,9 +193,9 @@ export default function CheckoutForm() {
                 {...register('cpf')}
                 id="cpf"
                 placeholder="000.000.000-00"
-                className="input"
+                className="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] px-4 py-3 text-sm"
               />
-              {errors.cpf && <p className="mt-1 text-sm text-error">{errors.cpf.message}</p>}
+              {errors.cpf && <p className="mt-1 text-sm text-[var(--color-error)]">{errors.cpf.message}</p>}
             </div>
 
             <div>
@@ -206,9 +206,9 @@ export default function CheckoutForm() {
                 {...register('phone')}
                 id="phone"
                 placeholder="(00) 00000-0000"
-                className="input"
+                className="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] px-4 py-3 text-sm"
               />
-              {errors.phone && <p className="mt-1 text-sm text-error">{errors.phone.message}</p>}
+              {errors.phone && <p className="mt-1 text-sm text-[var(--color-error)]">{errors.phone.message}</p>}
             </div>
           </div>
 
@@ -225,9 +225,9 @@ export default function CheckoutForm() {
                   {...register('address.street')}
                   id="street"
                   placeholder="Rua das Flores"
-                  className="input"
+                  className="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] px-4 py-3 text-sm"
                 />
-                {errors.address?.street && <p className="mt-1 text-sm text-error">{errors.address.street.message}</p>}
+                {errors.address?.street && <p className="mt-1 text-sm text-[var(--color-error)]">{errors.address.street.message}</p>}
               </div>
 
               <div>
@@ -238,9 +238,9 @@ export default function CheckoutForm() {
                   {...register('address.number')}
                   id="number"
                   placeholder="123"
-                  className="input"
+                  className="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] px-4 py-3 text-sm"
                 />
-                {errors.address?.number && <p className="mt-1 text-sm text-error">{errors.address.number.message}</p>}
+                {errors.address?.number && <p className="mt-1 text-sm text-[var(--color-error)]">{errors.address.number.message}</p>}
               </div>
 
               <div>
@@ -251,9 +251,9 @@ export default function CheckoutForm() {
                   {...register('address.neighborhood')}
                   id="neighborhood"
                   placeholder="Centro"
-                  className="input"
+                  className="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] px-4 py-3 text-sm"
                 />
-                {errors.address?.neighborhood && <p className="mt-1 text-sm text-error">{errors.address.neighborhood.message}</p>}
+                {errors.address?.neighborhood && <p className="mt-1 text-sm text-[var(--color-error)]">{errors.address.neighborhood.message}</p>}
               </div>
 
               <div>
@@ -264,9 +264,9 @@ export default function CheckoutForm() {
                   {...register('address.city')}
                   id="city"
                   placeholder="São Paulo"
-                  className="input"
+                  className="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] px-4 py-3 text-sm"
                 />
-                {errors.address?.city && <p className="mt-1 text-sm text-error">{errors.address.city.message}</p>}
+                {errors.address?.city && <p className="mt-1 text-sm text-[var(--color-error)]">{errors.address.city.message}</p>}
               </div>
 
               <div>
@@ -277,9 +277,9 @@ export default function CheckoutForm() {
                   {...register('address.state')}
                   id="state"
                   placeholder="SP"
-                  className="input"
+                  className="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] px-4 py-3 text-sm"
                 />
-                {errors.address?.state && <p className="mt-1 text-sm text-error">{errors.address.state.message}</p>}
+                {errors.address?.state && <p className="mt-1 text-sm text-[var(--color-error)]">{errors.address.state.message}</p>}
               </div>
 
               <div>
@@ -290,9 +290,9 @@ export default function CheckoutForm() {
                   {...register('address.zipCode')}
                   id="zipCode"
                   placeholder="00000-000"
-                  className="input"
+                  className="w-full rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-tertiary)] px-4 py-3 text-sm"
                 />
-                {errors.address?.zipCode && <p className="mt-1 text-sm text-error">{errors.address.zipCode.message}</p>}
+                {errors.address?.zipCode && <p className="mt-1 text-sm text-[var(--color-error)]">{errors.address.zipCode.message}</p>}
               </div>
             </div>
           </div>
@@ -324,7 +324,7 @@ export default function CheckoutForm() {
           <button
             type="submit"
             disabled={isSubmitting || !frete}
-            className="w-full btn-success disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full bg-[var(--color-accent)] text-[var(--color-text-primary)] px-5 py-3 text-sm font-semibold rounded-3xl hover:bg-[var(--color-accent-hover)] transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isSubmitting ? (
               <>

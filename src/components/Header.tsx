@@ -25,8 +25,8 @@ export default function Header() {
         <nav className="hidden md:flex gap-8 text-sm text-[var(--color-text-primary)]">
           <Link href="/">Início</Link>
           <Link href="/sobre">Sobre</Link>
-          <Link href="/pecas">Peças</Link>
-          <Link href="/contato">Contato</Link>
+          <Link href="/loja">Loja</Link>
+          <Link href="https://wa.me/5521986483118">Contato</Link>
           <Link href="/loja/carrinho" className="inline-flex items-center gap-2">
             <ShoppingCart className="w-4 h-4" />
             Carrinho

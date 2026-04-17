@@ -9,8 +9,8 @@ export default function CheckoutPage() {
   const { items } = useCart()
 
   return (
-    <main className="max-w-5xl mx-auto p-6">
-      <Link href="/loja" className="text-purple-700 hover:underline">
+    <main className="max-w-5xl mx-auto p-6 bg-[var(--color-bg-primary)] min-h-screen text-[var(--color-text-primary)]">
+      <Link href="/loja" className="text-[var(--color-accent)] hover:underline">
         ← Voltar à loja
       </Link>
 
@@ -24,7 +24,7 @@ export default function CheckoutPage() {
             <CheckoutForm />
           </div>
 
-          <div className="order-1 lg:order-2 bg-[var(--color-admin-bg)] rounded shadow p-4">
+          <div className="order-1 lg:order-2 bg-[var(--color-bg-card)] rounded-3xl border border-[var(--color-border)] p-4 shadow-sm">
             <h2 className="text-lg font-semibold mb-4">Resumo do Pedido</h2>
             {items.map((item) => (
               <div

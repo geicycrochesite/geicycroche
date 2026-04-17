@@ -38,7 +38,7 @@ export async function POST(req: Request) {
       description,
       image,
       featured: featured ?? false,
-      showOnHome: showOnHome ?? false, // ✅ novo
+      showOnHome: showOnHome ?? false,
       order: order ?? 0,
     },
   })

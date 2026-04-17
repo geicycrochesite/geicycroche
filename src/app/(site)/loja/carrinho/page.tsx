@@ -10,9 +10,9 @@ export default function CarrinhoPage() {
 
   if (items.length === 0) {
     return (
-      <main className="p-6 text-center">
-        <h2 className="text-2xl font-semibold mb-4">Seu carrinho está vazio</h2>
-        <Link href="/loja" className="text-green-700 hover:underline">
+      <main className="p-6 text-center bg-[var(--color-bg-primary)] min-h-screen">
+        <h2 className="text-2xl font-semibold mb-4 text-[var(--color-text-primary)]">Seu carrinho está vazio</h2>
+        <Link href="/loja" className="text-[var(--color-accent)] hover:underline">
           Voltar à loja
         </Link>
       </main>
@@ -20,13 +20,13 @@ export default function CarrinhoPage() {
   }
 
   return (
-    <main className="max-w-4xl mx-auto p-6">
+    <main className="max-w-4xl mx-auto p-6 bg-[var(--color-bg-primary)] min-h-screen text-[var(--color-text-primary)]">
       <h1 className="text-3xl font-bold mb-6">Meu Carrinho ({totalItems} itens)</h1>
       <div className="space-y-4">
         {items.map(item => (
           <div
             key={`${item.productId}-${item.color.hex}-${item.size.name}`}
-            className="flex items-center gap-4 border-b pb-4"
+            className="flex items-center gap-4 border-b border-[var(--color-border)] pb-4"
           >
             <Image
               src={item.imageUrl}
@@ -37,7 +37,7 @@ export default function CarrinhoPage() {
             />
             <div className="flex-1">
               <Link href={`/loja/produto/${item.slug}`}>
-                <h2 className="text-lg font-semibold hover:underline">{item.name}</h2>
+                <h2 className="text-lg font-semibold hover:underline text-[var(--color-accent)]">{item.name}</h2>
               </Link>
               <p className="text-sm text-[var(--color-text-secondary)]">
                 Cor: <span className="font-medium">{item.color.name}</span>{' '}
@@ -47,7 +47,7 @@ export default function CarrinhoPage() {
                 />
               </p>
               <p className="text-sm text-[var(--color-text-secondary)]">Tamanho: {item.size.name}</p>
-              <p className="mt-1 text-[var(--color-success)] font-bold">R$ {(item.price * item.quantity).toFixed(2)}</p>
+              <p className="mt-1 text-[var(--color-accent)] font-bold">R$ {(item.price * item.quantity).toFixed(2)}</p>
             </div>
             <div className="flex flex-col items-end gap-2">
               <p className="text-sm">Qtd: {item.quantity}</p>
@@ -55,7 +55,7 @@ export default function CarrinhoPage() {
                 onClick={() =>
                   removeItem(item.productId, item.color.hex, item.size.name)
                 }
-                className="text-red-600 hover:underline text-sm"
+                className="text-[var(--color-error)] hover:underline text-sm"
               >
                 Remover
               </button>
@@ -68,7 +68,7 @@ export default function CarrinhoPage() {
         <p className="mb-8 text-xl font-semibold">Total: R$ {totalPrice.toFixed(2)}</p>
         <Link
           href="/loja/checkout"
-          className="mt-8 bg-[var(--color-success)] text-[var(--color-text-primary)] px-6 py-3 rounded-md hover:bg-[var(--color-success)]/80 transition"
+          className="mt-8 bg-[var(--color-accent)] text-[var(--color-text-primary)] px-6 py-3 rounded-md hover:bg-[var(--color-accent-hover)] transition"
         >
           Finalizar Compra
         </Link>
@@ -77,7 +77,7 @@ export default function CarrinhoPage() {
       <div className="mt-6 text-center">
         <button
           onClick={() => clearCart()}
-          className="text-gray-600 hover:underline text-sm"
+          className="text-[var(--color-text-secondary)] hover:underline text-sm"
         >
           Limpar Carrinho
         </button>
