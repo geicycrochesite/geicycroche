@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 import { CustomPage } from '@prisma/client'
 import toast from 'react-hot-toast'
 import type { FAQItem } from '@/types/admin'
@@ -10,11 +11,13 @@ type Props = {
   page: CustomPage
 }
 
+type PageFormData = {
+  title: string
+  introText: string
+}
+
 export default function PageForm({ page }: Props) {
   const router = useRouter()
-
-  const [title, setTitle] = useState(page.title || '')
-  const [introText, setIntroText] = useState(page.introText || '')
 
   const [faqs, setFaqs] = useState<FAQItem[]>(
     (page.faq as FAQItem[]) || []
@@ -24,6 +27,13 @@ export default function PageForm({ page }: Props) {
   const [preview, setPreview] = useState<string | null>(page.coverImage || null)
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(page.coverImage || null)
   const [isUploading, setIsUploading] = useState(false)
+
+  const { register, handleSubmit, formState: { errors } } = useForm<PageFormData>({
+    defaultValues: {
+      title: page.title || '',
+      introText: page.introText || ''
+    }
+  })
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -72,15 +82,13 @@ export default function PageForm({ page }: Props) {
     setFaqs(updated)
   }
 
-  async function handleSubmit(e: any) {
-    e.preventDefault()
-
+  async function onSubmit(data: PageFormData) {
     const res = await fetch(`/api/admin/pages/${page.id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        title,
-        introText,
+        title: data.title,
+        introText: data.introText,
         coverImage: uploadedUrl,
         faq: faqs
       })
@@ -106,7 +114,7 @@ export default function PageForm({ page }: Props) {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
 
         {/* CONTEÚDO */}
         <section className="rounded-3xl border border-[var(--color-admin-border)] bg-[var(--color-admin-bg)] p-6 shadow-sm">
@@ -115,18 +123,18 @@ export default function PageForm({ page }: Props) {
           <div className="mt-6 space-y-4">
 
             <input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              {...register('title', { required: 'Título é obrigatório' })}
               placeholder="Título da página"
               className="w-full rounded-2xl border border-[var(--color-admin-border)] bg-[var(--color-bg-tertiary)] px-4 py-3 text-sm"
             />
+            {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
 
             <textarea
-              value={introText}
-              onChange={(e) => setIntroText(e.target.value)}
+              {...register('introText', { required: 'Texto introdutório é obrigatório' })}
               placeholder="Texto introdutório"
               className="w-full rounded-3xl border border-[var(--color-admin-border)] bg-[var(--color-bg-tertiary)] px-4 py-3 text-sm"
             />
+            {errors.introText && <p className="text-red-500 text-sm">{errors.introText.message}</p>}
 
           </div>
         </section>
