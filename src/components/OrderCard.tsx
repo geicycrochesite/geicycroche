@@ -44,14 +44,14 @@ function formatData(dateString: string): string {
  */
 function getStatusBadge(status: string | null): { text: string; color: string } {
   const statusMap: Record<string, { text: string; color: string }> = {
-    'approved': { text: '✓ Aprovado', color: 'bg-green-100 text-green-800' },
-    'pending': { text: '⏳ Pendente', color: 'bg-yellow-100 text-yellow-800' },
-    'failed': { text: '✗ Falhou', color: 'bg-red-100 text-red-800' },
-    'refunded': { text: '↩️ Reembolsado', color: 'bg-blue-100 text-blue-800' },
+    'approved': { text: '✓ Aprovado', color: 'bg-green-900 text-green-300' },
+    'pending': { text: '⏳ Pendente', color: 'bg-yellow-900 text-yellow-300' },
+    'failed': { text: '✗ Falhou', color: 'bg-red-900 text-red-300' },
+    'refunded': { text: '↩️ Reembolsado', color: 'bg-blue-900 text-blue-300' },
   }
   return statusMap[status?.toLowerCase() || 'pending'] || {
     text: 'Pendente',
-    color: 'bg-gray-100 text-gray-800'
+    color: 'bg-[var(--color-bg-tertiary)] text-[var(--color-text-secondary)]'
   }
 }
 
@@ -59,12 +59,12 @@ export function OrderCard({ pedido, onViewDetails }: OrderCardProps) {
   const statusInfo = getStatusBadge(pedido.statusPagamento)
 
   return (
-    <div className="bg-white rounded-lg shadow hover:shadow-md transition-shadow p-5 border border-gray-200">
+    <div className="bg-[var(--color-bg-card)] rounded-lg hover:shadow-md transition-shadow p-5 border border-[var(--color-border)]">
       {/* Cabeçalho: ID + Status */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3">
         <div className="flex-1">
-          <p className="text-sm text-gray-500">ID do Pedido</p>
-          <p className="font-mono text-lg font-semibold text-gray-900 break-all">
+          <p className="text-sm text-[var(--color-text-tertiary)]">ID do Pedido</p>
+          <p className="font-mono text-lg font-semibold text-[var(--color-text-primary)] break-all">
             {pedido.id}
           </p>
         </div>
@@ -74,16 +74,16 @@ export function OrderCard({ pedido, onViewDetails }: OrderCardProps) {
       </div>
 
       {/* Corpo: Total + Data */}
-      <div className="grid grid-cols-2 gap-4 mb-4 py-3 border-y border-gray-200">
+      <div className="grid grid-cols-2 gap-4 mb-4 py-3 border-y border-[var(--color-border-light)]">
         <div>
-          <p className="text-sm text-gray-500 mb-1">Total</p>
-          <p className="text-xl font-bold text-blue-600">
+          <p className="text-sm text-[var(--color-text-tertiary)] mb-1">Total</p>
+          <p className="text-xl font-bold text-[var(--color-accent)]">
             {formatTotal(pedido.total)}
           </p>
         </div>
         <div>
-          <p className="text-sm text-gray-500 mb-1">Data do Pedido</p>
-          <p className="text-gray-900 font-medium">
+          <p className="text-sm text-[var(--color-text-tertiary)] mb-1">Data do Pedido</p>
+          <p className="text-[var(--color-text-primary)] font-medium">
             {formatData(pedido.createdAt)}
           </p>
         </div>
@@ -92,7 +92,7 @@ export function OrderCard({ pedido, onViewDetails }: OrderCardProps) {
       {/* Rodapé: Botão */}
       <button
         onClick={() => onViewDetails(pedido.id)}
-        className="inline-block mt-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition duration-200"
+        className="inline-block mt-2 px-4 py-2 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-[var(--color-bg-primary)] text-sm font-medium rounded-lg transition duration-200"
       >
         Ver detalhes completos →
       </button>

@@ -29,19 +29,19 @@ export default function MeusPedidosPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[var(--color-bg-primary)] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
         {/* 📌 Cabeçalho */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Consultar Meus Pedidos</h1>
-          <p className="text-gray-600">Informe seu email e CPF para visualizar seus pedidos</p>
+          <h1 className="text-3xl font-bold text-[var(--color-text-primary)] mb-2">Consultar Meus Pedidos</h1>
+          <p className="text-[var(--color-text-secondary)]">Informe seu email e CPF para visualizar seus pedidos</p>
         </div>
 
         {/* 📝 Formulário */}
-        <form onSubmit={handleSubmit(handleBuscarPedidos)} className="bg-white rounded-lg shadow p-6 mb-8">
+        <form onSubmit={handleSubmit(handleBuscarPedidos)} className="bg-[var(--color-bg-card)] rounded-3xl border border-[var(--color-border)] p-6 mb-8">
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="email" className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">
                 Email
               </label>
               <input
@@ -49,13 +49,13 @@ export default function MeusPedidosPage() {
                 id="email"
                 type="email"
                 placeholder="seu@email.com"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+                className="w-full px-4 py-2 border border-[var(--color-border-light)] bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] rounded-lg focus:outline-none focus:border-[var(--color-accent)] transition placeholder-[var(--color-text-tertiary)]"
               />
-              {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
+              {errors.email && <p className="mt-1 text-sm text-[var(--color-error)]">{errors.email.message}</p>}
             </div>
 
             <div>
-              <label htmlFor="cpf" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="cpf" className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">
                 CPF
               </label>
               <input
@@ -63,16 +63,16 @@ export default function MeusPedidosPage() {
                 id="cpf"
                 type="text"
                 placeholder="000.000.000-00"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+                className="w-full px-4 py-2 border border-[var(--color-border-light)] bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] rounded-lg focus:outline-none focus:border-[var(--color-accent)] transition placeholder-[var(--color-text-tertiary)]"
               />
-              {errors.cpf && <p className="mt-1 text-sm text-red-600">{errors.cpf.message}</p>}
+              {errors.cpf && <p className="mt-1 text-sm text-[var(--color-error)]">{errors.cpf.message}</p>}
             </div>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-6 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+            className="w-full mt-6 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] disabled:bg-[var(--color-text-tertiary)] text-[var(--color-bg-primary)] font-medium py-2 px-4 rounded-lg transition duration-200"
           >
             {loading ? (
               <span className="flex items-center justify-center">
@@ -87,22 +87,22 @@ export default function MeusPedidosPage() {
 
         {/* ⚠️ Mensagens de erro */}
         {erro && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-red-700">⚠️ {erro}</p>
+          <div className="mb-6 p-4 bg-red-950 border border-[var(--color-error)] rounded-lg">
+            <p className="text-[var(--color-error)]">⚠️ {erro}</p>
           </div>
         )}
 
         {/* 🔍 Sem resultados */}
         {semResultados && !loading && (
-          <div className="text-center p-6 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <p className="text-yellow-700">Nenhum pedido encontrado com esses dados.</p>
+          <div className="text-center p-6 bg-[var(--color-bg-tertiary)] border border-[var(--color-border)] rounded-lg">
+            <p className="text-[var(--color-text-secondary)]">Nenhum pedido encontrado com esses dados.</p>
           </div>
         )}
 
         {/* 📋 Lista de pedidos */}
         {pedidos.length > 0 && (
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+            <h2 className="text-xl font-semibold text-[var(--color-text-primary)] mb-4">
               {pedidos.length} pedido{pedidos.length !== 1 ? 's' : ''} encontrado{pedidos.length !== 1 ? 's' : ''}:
             </h2>
 

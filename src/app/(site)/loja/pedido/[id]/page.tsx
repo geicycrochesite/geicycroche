@@ -54,12 +54,16 @@ export default async function PedidoPage({ params, searchParams }: PedidoPagePro
   }))
 
   return (
-    <main className="max-w-2xl mx-auto py-10 px-4">
+    <main className="max-w-2xl mx-auto py-10 px-4 min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
+      <a href="/loja/meus-pedidos" className="text-[var(--color-accent)] hover:underline mb-4 inline-block">
+        ← Voltar aos meus pedidos
+      </a>
+
       <h1 className="text-2xl font-bold mb-4">
         Pedido #{order.id.slice(0, 8)}
       </h1>
 
-      <div className="mb-6 p-4 border border-[var(--color-border)] rounded bg-[var(--color-bg-tertiary)]">
+      <div className="mb-6 p-4 border border-[var(--color-border)] rounded-lg bg-[var(--color-bg-card)]">
         <p className="text-lg font-semibold">
           {statusText[displayStatus as keyof typeof statusText] ||
             'Aguardando pagamento...'}
@@ -77,24 +81,24 @@ export default async function PedidoPage({ params, searchParams }: PedidoPagePro
         )}
       </div>
 
-      <h2 className="text-xl font-semibold mb-2">
+      <h2 className="text-xl font-semibold mb-4">
         Itens do pedido:
       </h2>
 
-      <ul className="space-y-2">
+      <ul className="space-y-2 mb-6">
         {order.items.map((item) => (
           <li
             key={item.id}
-            className="border border-[var(--color-border)] p-2 rounded"
+            className="border border-[var(--color-border-light)] p-3 rounded-lg bg-[var(--color-bg-tertiary)]"
           >
-            <p className="font-medium">{item.name}</p>
+            <p className="font-medium text-[var(--color-text-primary)]">{item.name}</p>
 
-            <p className="text-sm text-[var(--color-text-secondary)]">
+            <p className="text-sm text-[var(--color-text-secondary)] mt-1">
               Quantidade: {item.quantity} — Tamanho: {item.size} — Cor:{' '}
               {item.color}
             </p>
 
-            <p className="text-sm font-semibold">
+            <p className="text-sm font-semibold text-[var(--color-accent)] mt-1">
               R${' '}
               {(Number(item.price) * item.quantity).toFixed(2)}
             </p>
@@ -102,12 +106,16 @@ export default async function PedidoPage({ params, searchParams }: PedidoPagePro
         ))}
       </ul>
 
-      <div className="mt-6 text-right font-bold text-lg">
-        Subtotal: R$ {totalProdutos.toFixed(2)}
-        <br />
-        Frete: R$ {frete.toFixed(2)}
-        <br />
-        Total: R$ {totalGeral.toFixed(2)}
+      <div className="border-t border-[var(--color-border)] pt-4 mt-8 text-right">
+        <div className="mb-2 text-[var(--color-text-secondary)]">
+          Subtotal: R$ {totalProdutos.toFixed(2)}
+        </div>
+        <div className="mb-3 text-[var(--color-text-secondary)]">
+          Frete: R$ {frete.toFixed(2)}
+        </div>
+        <div className="font-bold text-lg text-[var(--color-accent)]">
+          Total: R$ {totalGeral.toFixed(2)}
+        </div>
       </div>
     </main>
   )
