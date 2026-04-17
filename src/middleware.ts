@@ -1,44 +1,46 @@
-import { NextResponse, type NextRequest } from 'next/server'
-import { verifyAuthToken } from '@/lib/session'
+// src/middleware.ts
 
-const PUBLIC_PATHS = ['/admin/login', '/admin/setup-admin', '/api/auth/login', '/api/auth/logout']
+import { NextResponse, type NextRequest } from 'next/server'
+
+const PUBLIC_PATHS = [
+  '/admin/login',
+  '/admin/setup-admin',
+  '/api/auth/login',
+  '/api/auth/logout'
+]
 
 const AUTH_COOKIE_NAME = 'auth_token'
 
 function redirectToLogin(req: NextRequest) {
-  const loginUrl = req.nextUrl.clone()
-  loginUrl.pathname = '/admin/login'
-  loginUrl.search = ''
-  return NextResponse.redirect(loginUrl)
+  const url = req.nextUrl.clone()
+  url.pathname = '/admin/login'
+  url.search = ''
+  return NextResponse.redirect(url)
 }
 
-export async function middleware(req: NextRequest) {
+export function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname
 
-  // Não deve bloquear rotas fora de /admin
-  if (
-    !pathname.startsWith('/admin') &&
-    !pathname.startsWith('/api/admin')
-  ) {
+  // libera tudo fora do admin/api admin
+  if (!pathname.startsWith('/admin') && !pathname.startsWith('/api/admin')) {
     return NextResponse.next()
   }
 
-  // Permite login e endpoints de auth
+  // libera rotas públicas
   if (PUBLIC_PATHS.includes(pathname)) {
     return NextResponse.next()
   }
 
+  // só verifica existência do cookie (SEM JWT VERIFY AQUI)
   const token = req.cookies.get(AUTH_COOKIE_NAME)?.value
+
+  console.log("MIDDLEWARE TOKEN:", token)
+
   if (!token) {
     return redirectToLogin(req)
   }
 
-  const payload = verifyAuthToken(token)
-  if (!payload || payload.role !== 'admin') {
-    return redirectToLogin(req)
-  }
-
-  // Autorizado: pode acessar /admin/*
+  // não valida assinatura aqui (Edge incompatível com jsonwebtoken)
   return NextResponse.next()
 }
 

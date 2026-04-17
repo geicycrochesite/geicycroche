@@ -1,22 +1,17 @@
 'use client'
 
-import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-
-type Pedido = {
-  id: string
-  statusPagamento: string | null
-  total: number
-  createdAt: string
-}
+import { OrderCard } from '@/components/OrderCard'
+import { useBuscaPedidos } from '@/lib/hooks/useBuscaPedidos'
 
 type FormInputs = {
   email: string
   cpf: string
 }
 
+// 🔒 Validação de forma
 const schema = yup.object().shape({
   email: yup.string().email('Email inválido').required('Email obrigatório'),
   cpf: yup.string().required('CPF obrigatório'),
@@ -27,76 +22,102 @@ export default function MeusPedidosPage() {
     resolver: yupResolver(schema)
   })
 
-  const [pedidos, setPedidos] = useState<Pedido[]>([])
-  const [loading, setLoading] = useState(false)
-  const [erro, setErro] = useState('')
+  const { pedidos, loading, erro, semResultados, buscar } = useBuscaPedidos()
 
-  async function buscarPedidos(data: FormInputs) {
-    setLoading(true)
-    setErro('')
-    try {
-      const res = await fetch('/api/orders/find', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      })
-
-      if (!res.ok) {
-        throw new Error('Erro ao buscar pedidos')
-      }
-
-      const pedidosEncontrados: Pedido[] = await res.json()
-      setPedidos(pedidosEncontrados)
-    } catch {
-      setErro('Não foi possível buscar os pedidos. Verifique os dados informados.')
-    } finally {
-      setLoading(false)
-    }
+  async function handleBuscarPedidos(data: FormInputs) {
+    await buscar(data.email, data.cpf)
   }
 
   return (
-    <div className="max-w-xl mx-auto my-14 p-4">
-      <h1 className="text-2xl font-bold mb-4">Consultar Meus Pedidos</h1>
-
-      <form onSubmit={handleSubmit(buscarPedidos)} className="space-y-4">
-        <div>
-          <label>Email</label>
-          <input {...register('email')} className="border p-2 w-full rounded" />
-          {errors.email && <p className="text-red-600">{errors.email.message}</p>}
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-2xl mx-auto">
+        {/* 📌 Cabeçalho */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Consultar Meus Pedidos</h1>
+          <p className="text-gray-600">Informe seu email e CPF para visualizar seus pedidos</p>
         </div>
 
-        <div>
-          <label>CPF</label>
-          <input {...register('cpf')} className="border p-2 w-full rounded" />
-          {errors.cpf && <p className="text-red-600">{errors.cpf.message}</p>}
-        </div>
-
-        <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded">
-          {loading ? 'Buscando...' : 'Buscar pedidos'}
-        </button>
-      </form>
-
-      {erro && <p className="text-red-600 mt-4">{erro}</p>}
-
-      {pedidos.length > 0 && (
-        <div className="mt-6 space-y-4">
-          <h2 className="text-xl font-semibold">Pedidos encontrados:</h2>
-          {pedidos.map((pedido) => (
-            <div key={pedido.id} className="border p-3 rounded">
-              <p><strong>Pedido:</strong> {pedido.id}</p>
-              <p><strong>Status:</strong> {pedido.statusPagamento || 'Pendente'}</p>
-              <p><strong>Total:</strong> R$ {pedido.total.toFixed(2)}</p>
-              <p><strong>Criado em:</strong> {new Date(pedido.createdAt).toLocaleString('pt-BR')}</p>
-              <a
-                href={`/loja/pedido/${pedido.id}`}
-                className="text-blue-600 underline mt-2 inline-block"
-              >
-                Ver detalhes
-              </a>
+        {/* 📝 Formulário */}
+        <form onSubmit={handleSubmit(handleBuscarPedidos)} className="bg-white rounded-lg shadow p-6 mb-8">
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                Email
+              </label>
+              <input
+                {...register('email')}
+                id="email"
+                type="email"
+                placeholder="seu@email.com"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+              />
+              {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
             </div>
-          ))}
-        </div>
-      )}
+
+            <div>
+              <label htmlFor="cpf" className="block text-sm font-medium text-gray-700 mb-1">
+                CPF
+              </label>
+              <input
+                {...register('cpf')}
+                id="cpf"
+                type="text"
+                placeholder="000.000.000-00"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+              />
+              {errors.cpf && <p className="mt-1 text-sm text-red-600">{errors.cpf.message}</p>}
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full mt-6 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+          >
+            {loading ? (
+              <span className="flex items-center justify-center">
+                <span className="animate-spin mr-2">⟳</span>
+                Buscando...
+              </span>
+            ) : (
+              'Buscar pedidos'
+            )}
+          </button>
+        </form>
+
+        {/* ⚠️ Mensagens de erro */}
+        {erro && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-700">⚠️ {erro}</p>
+          </div>
+        )}
+
+        {/* 🔍 Sem resultados */}
+        {semResultados && !loading && (
+          <div className="text-center p-6 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p className="text-yellow-700">Nenhum pedido encontrado com esses dados.</p>
+          </div>
+        )}
+
+        {/* 📋 Lista de pedidos */}
+        {pedidos.length > 0 && (
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              {pedidos.length} pedido{pedidos.length !== 1 ? 's' : ''} encontrado{pedidos.length !== 1 ? 's' : ''}:
+            </h2>
+
+            {pedidos.map((pedido) => (
+              <OrderCard
+                key={pedido.id}
+                pedido={pedido}
+                onViewDetails={(id) => {
+                  window.location.href = `/loja/pedido/${id}`
+                }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
