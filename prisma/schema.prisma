@@ -8,21 +8,6 @@ datasource db {
 }
 
 //////////////////////////
-// 🏪 (OPCIONAL) MULTI-LOJA
-//////////////////////////
-
-model Store {
-  id    String   @id @default(cuid())
-  name  String
-  slug  String   @unique
-
-  products Product[]
-  posts    Post[]
-  categories Category[]
-  blogCategories BlogCategory[]
-}
-
-//////////////////////////
 // 🛍️ PRODUTOS
 //////////////////////////
 
@@ -39,9 +24,6 @@ model Product {
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
-  storeId     String?
-  store       Store?   @relation(fields: [storeId], references: [id])
 
   colors      ProductColor[]
   sizes       Size[]
@@ -76,9 +58,6 @@ model Category {
   id        String    @id @default(cuid())
   name      String
   slug      String    @unique
-
-  storeId   String?
-  store     Store?    @relation(fields: [storeId], references: [id])
 
   products  Product[] @relation("ProductCategories")
 }
@@ -152,9 +131,6 @@ model BlogCategory {
   featured    Boolean  @default(false) // destaque (ex: topo)
   order       Int?     // ordenação manual
 
-  storeId     String?
-  store       Store?   @relation(fields: [storeId], references: [id], onDelete: Cascade)
-
   posts       Post[]
 
   createdAt   DateTime @default(now())   // ✅ ADD
@@ -174,9 +150,6 @@ model Post {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  storeId     String?
-  store       Store?   @relation(fields: [storeId], references: [id])
-
   categoryId  String?
   category    BlogCategory? @relation(fields: [categoryId], references: [id])
 
@@ -195,7 +168,6 @@ model PostSEO {
 
 model CustomPage {
   id        String @id @default(cuid())
-  storeId   String
 
   slug      String   // "sobre" | "personalizados"
   title     String
@@ -213,5 +185,5 @@ model CustomPage {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([storeId, slug])
+  @@unique([slug])
 }
