@@ -19,12 +19,10 @@ export function verifyAuthToken(token: string): AdminUserPayload | null {
   }
 }
 
-export const authCookieName = 'auth_token'
-
 export function createAuthCookie(token: string) {
   const isProd = process.env.NODE_ENV === 'production'
   return {
-    name: authCookieName,
+    name: 'auth_token',
     value: token,
     httpOnly: true,
     secure: isProd,
@@ -34,14 +32,3 @@ export function createAuthCookie(token: string) {
   }
 }
 
-export function clearAuthCookie() {
-  return {
-    name: authCookieName,
-    value: '',
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax' as const,
-    path: '/',
-    maxAge: 0
-  }
-}

@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
-import { buildYouTubeEmbedUrl, normalizeYouTubeUrl } from '@/lib/youtube'
+import { normalizeYouTubeUrl } from '@/lib/youtube'
 import type { Category, ProductImage, AdminProduct, ProductFormData } from '@/types/admin'
 
 type Props = {
@@ -53,9 +53,7 @@ export default function ProductForm({ mode, categories, product }: Props) {
 
   const { register, handleSubmit, watch, setValue } = useForm<ProductFormData>({ defaultValues })
   const watchedName = watch('name')
-  const watchedSlug = watch('slug')
   const youtubeUrlValue = watch('youtubeUrl')
-  const watchedCategories = watch('categories')
 
   useEffect(() => {
     if (!manualSlug) {
@@ -69,7 +67,7 @@ export default function ProductForm({ mode, categories, product }: Props) {
     }
   }, [previewUrls])
 
-  const embedUrl = useMemo(() => buildYouTubeEmbedUrl(youtubeUrlValue), [youtubeUrlValue])
+  const embedUrl = useMemo(() => normalizeYouTubeUrl(youtubeUrlValue), [youtubeUrlValue])
   const visibleExistingImages = existingImages.filter((image) => !removedImageIds.includes(image.id))
 
   function handleFileSelection(event: React.ChangeEvent<HTMLInputElement>) {

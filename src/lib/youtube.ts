@@ -27,8 +27,3 @@ export function normalizeYouTubeUrl(value: string) {
   const videoId = extractYouTubeVideoId(value)
   return videoId ? `https://www.youtube.com/watch?v=${videoId}` : null
 }
-
-export function buildYouTubeEmbedUrl(value: string) {
-  const videoId = extractYouTubeVideoId(value)
-  return videoId ? `https://www.youtube.com/embed/${videoId}` : null
-}
