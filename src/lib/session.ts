@@ -32,3 +32,15 @@ export function createAuthCookie(token: string) {
   }
 }
 
+export function clearAuthCookie() {
+  return {
+    name: 'auth_token',
+    value: '',
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax' as const,
+    path: '/',
+    maxAge: 0
+  }
+}
+

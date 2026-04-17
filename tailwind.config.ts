@@ -25,9 +25,7 @@ const config: Config = {
         },
         accent: "var(--color-accent)",
         "accent-hover": "var(--color-accent-hover)",
-        success: "var(--color-success)",
         error: "var(--color-error)",
-        info: "var(--color-info)",
         border: "var(--color-border)",
         "border-light": "var(--color-border-light)",
         // Admin

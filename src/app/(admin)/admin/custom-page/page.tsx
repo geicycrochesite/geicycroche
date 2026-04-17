@@ -2,12 +2,10 @@ import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 
 export default async function PagesList() {
-  const storeId = "SEU_STORE_ID"
 
-  const pages = await prisma.customPage.findMany({
-    where: { storeId },
-    orderBy: { createdAt: "desc" }
-  })
+const pages = await prisma.customPage.findMany({
+  orderBy: { createdAt: "desc" }
+})
 
   return (
     <div className="p-6 space-y-6">

@@ -40,7 +40,6 @@ export async function POST(req: Request) {
       featured: featured ?? false,
       showOnHome: showOnHome ?? false, // ✅ novo
       order: order ?? 0,
-      storeId: storeId || null, // ✅ multi-loja
     },
   })
 

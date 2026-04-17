@@ -3,19 +3,14 @@ import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 
 async function main() {
-  const storeId = "SEU_STORE_ID"
 
   // SOBRE
   await prisma.customPage.upsert({
     where: {
-      storeId_slug: {
-        storeId,
-        slug: "sobre"
-      }
+      slug: "sobre"
     },
     update: {},
     create: {
-      storeId,
       slug: "sobre",
       title: "Sobre nós",
       introText: "Conheça nossa história e como tudo começou.",
@@ -28,14 +23,10 @@ async function main() {
   // PERSONALIZADOS
   await prisma.customPage.upsert({
     where: {
-      storeId_slug: {
-        storeId,
-        slug: "personalizados"
-      }
+      slug: "personalizados"
     },
     update: {},
     create: {
-      storeId,
       slug: "personalizados",
       title: "Pedidos Personalizados",
       introText: "Veja como funciona para pedir seu produto personalizado.",

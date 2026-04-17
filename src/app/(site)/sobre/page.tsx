@@ -6,10 +6,7 @@ async function getPage() {
 
   return prisma.customPage.findUnique({
     where: {
-      storeId_slug: {
-        storeId,
         slug: "sobre"
-      }
     }
   })
 }

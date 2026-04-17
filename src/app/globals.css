@@ -16,9 +16,7 @@
   --color-accent: #C8A96A;
   --color-accent-hover: #B89A5A;
 
-  --color-success: #2F8F5B;
   --color-error: #dc2626;
-  --color-info: #2563eb;
 
   --color-border: #333333;
   --color-border-light: #444444;
@@ -88,5 +86,10 @@ body {
 }
 
 .btn-success {
-  @apply rounded-3xl bg-success px-5 py-3 text-sm font-semibold text-[var(--color-text-primary)] hover:bg-success/80 transition;
+  @apply rounded-3xl px-5 py-3 text-sm font-semibold text-[var(--color-text-primary)] transition;
+  background-color: #16a34a;
+}
+
+.btn-success:hover {
+  background-color: #15803d;
 }
