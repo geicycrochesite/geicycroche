@@ -4,14 +4,10 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { CustomPage } from '@prisma/client'
 import toast from 'react-hot-toast'
+import type { FAQItem } from '@/types/admin'
 
 type Props = {
   page: CustomPage
-}
-
-type FAQItem = {
-  question: string
-  answer: string
 }
 
 export default function PageForm({ page }: Props) {

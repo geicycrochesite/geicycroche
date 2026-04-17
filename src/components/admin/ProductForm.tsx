@@ -6,46 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import { buildYouTubeEmbedUrl, normalizeYouTubeUrl } from '@/lib/youtube'
-
-type Category = {
-  id: string
-  name: string
-}
-
-type ProductImage = {
-  id: string
-  url: string
-}
-
-type AdminProduct = {
-  id: string
-  name: string
-  slug: string
-  description: string
-  price: number
-  stock: number
-  materials: string | null
-  handmade: boolean
-  youtubeUrl: string | null
-  categories: Category[]
-  images: ProductImage[]
-  colors: { id: string; name: string; hex: string }[]
-  sizes: { id: string; name: string }[]
-}
-
-type ProductFormData = {
-  name: string
-  slug: string
-  description: string
-  price: string
-  stock: string
-  materials: string
-  handmade: boolean
-  categories: string[]
-  youtubeUrl: string
-  colors: { name: string; hex: string }[]
-  sizes: { name: string }[]
-}
+import type { Category, ProductImage, AdminProduct, ProductFormData } from '@/types/admin'
 
 type Props = {
   mode: 'create' | 'edit'

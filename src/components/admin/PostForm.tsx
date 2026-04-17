@@ -5,37 +5,12 @@ import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import DeletePostButton from '@/components/admin/DeletePostButton'
 import toast from 'react-hot-toast'
-
-type Category = {
-  id: string
-  name: string
-}
-
-type Post = {
-  id: string
-  title: string
-  slug: string
-  content: string
-  excerpt?: string | null
-  coverImage?: string | null
-  categoryId?: string | null
-  published: boolean
-}
+import type { Category, Post, PostFormData } from '@/types/admin'
 
 type Props = {
   mode: 'create' | 'edit'
   categories: Category[]
   post?: Post
-}
-
-type FormData = {
-  title: string
-  slug: string
-  content: string
-  excerpt: string
-  coverImage: string
-  categoryId: string
-  published: boolean
 }
 
 function slugify(value: string) {
@@ -55,7 +30,7 @@ export default function PostForm({ mode, categories, post }: Props) {
   const [uploadedUrl, setUploadedUrl] = useState<string | null>(post?.coverImage || null)
   const [isUploading, setIsUploading] = useState(false)
 
-  const { register, handleSubmit, watch, setValue } = useForm<FormData>({
+  const { register, handleSubmit, watch, setValue } = useForm<PostFormData>({
     defaultValues: {
       title: post?.title || '',
       slug: post?.slug || '',
@@ -116,7 +91,7 @@ export default function PostForm({ mode, categories, post }: Props) {
     }
   }
 
-  async function onSubmit(data: FormData) {
+  async function onSubmit(data: PostFormData) {
 
       if (!uploadedUrl) {
     toast.error('Imagem de capa é obrigatória')
