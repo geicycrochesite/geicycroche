@@ -82,8 +82,8 @@ export async function POST(req: NextRequest) {
     preferencePayload.payer = { email: payerEmail };
   }
 
-  console.log('MERCADO_PAGO_ACCESS_TOKEN encontrado:', !!accessToken);
-  console.log('Payload de preferência Mercado Pago:', JSON.stringify(preferencePayload, null, 2));
+  console.log('[PREFERENCE] MERCADO_PAGO_ACCESS_TOKEN encontrado:', !!accessToken);
+  console.log('[PREFERENCE] Payload de preferência Mercado Pago:', JSON.stringify(preferencePayload, null, 2));
 
   try {
     const mpResponse = await fetch('https://api.mercadopago.com/checkout/preferences', {

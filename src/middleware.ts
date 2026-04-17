@@ -1,24 +1,9 @@
 import { NextResponse, type NextRequest } from 'next/server'
-import { jwtVerify, type JWTPayload } from 'jose'
+import { verifyAuthToken } from '@/lib/session'
 
 const PUBLIC_PATHS = ['/admin/login', '/admin/setup-admin', '/api/auth/login', '/api/auth/logout']
 
 const AUTH_COOKIE_NAME = 'auth_token'
-const JWT_SECRET = process.env.AUTH_JWT_SECRET
-
-if (!JWT_SECRET) {
-  throw new Error('AUTH_JWT_SECRET não definido em .env')
-}
-
-async function verifyJWT(token: string): Promise<JWTPayload | null> {
-  try {
-    const encoder = new TextEncoder()
-    const { payload } = await jwtVerify(token, encoder.encode(JWT_SECRET))
-    return payload
-  } catch (error) {
-    return null
-  }
-}
 
 function redirectToLogin(req: NextRequest) {
   const loginUrl = req.nextUrl.clone()
@@ -48,7 +33,7 @@ export async function middleware(req: NextRequest) {
     return redirectToLogin(req)
   }
 
-  const payload = await verifyJWT(token)
+  const payload = verifyAuthToken(token)
   if (!payload || payload.role !== 'admin') {
     return redirectToLogin(req)
   }
