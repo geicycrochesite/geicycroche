@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
 
@@ -54,17 +55,49 @@ export default async function BlogCategoriesPage() {
               <th className="px-4 py-3 text-left">Nome</th>
               <th className="px-4 py-3 text-left">Slug</th>
               <th className="px-4 py-3 text-left">Home</th>
+              <th className="px-4 py-3 text-left">Ações</th>
             </tr>
           </thead>
 
           <tbody>
             {categories.map((cat) => (
               <tr key={cat.id} className="border-t">
+
                 <td className="px-4 py-3">{cat.name}</td>
+
                 <td className="px-4 py-3">/{cat.slug}</td>
+
                 <td className="px-4 py-3">
                   {cat.showOnHome ? 'Sim' : 'Não'}
                 </td>
+
+                {/* ✅ NOVA COLUNA */}
+                <td className="px-4 py-3 space-x-2">
+
+                  {/* EDITAR */}
+                  <Link
+                    href={`/admin/blog/categories/${cat.id}/edit`}
+                    className="text-xs px-3 py-2 rounded-xl border border-[var(--color-admin-border)] bg-[var(--color-bg-tertiary)] hover:bg-[var(--color-bg-hover)]"
+                  >
+                    Editar
+                  </Link>
+
+                  {/* DELETAR (SEM onSubmit!) */}
+                  <form
+                    action={`/api/admin/blog/categories/${cat.id}`}
+                    method="POST"
+                    className="inline"
+                  >
+                    <button
+                      type="submit"
+                      className="text-xs px-3 py-2 rounded-xl bg-red-600 text-white hover:bg-red-700"
+                    >
+                      Excluir
+                    </button>
+                  </form>
+
+                </td>
+
               </tr>
             ))}
           </tbody>

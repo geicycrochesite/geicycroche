@@ -6,7 +6,7 @@ export async function GET() {
   const categories = await prisma.blogCategory.findMany({
     orderBy: [
   { order: 'asc' },
-  { createdAt: 'desc' }, // fallback
+  { createdAt: 'desc' },
 ]
   })
 
@@ -24,7 +24,6 @@ export async function POST(req: Request) {
     featured,
     showOnHome,
     order,
-    storeId, // ✅ novo
   } = body
 
   if (!name || !slug) {
