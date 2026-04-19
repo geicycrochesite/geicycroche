@@ -1,7 +1,11 @@
 import jwt from 'jsonwebtoken'
 import { AdminUserPayload } from '@/lib/auth'
 
-const JWT_SECRET = process.env.AUTH_JWT_SECRET || 'change_me_securely'
+const JWT_SECRET = process.env.AUTH_JWT_SECRET!
+
+if (!JWT_SECRET) {
+  throw new Error("AUTH_JWT_SECRET não definido")
+}
 const JWT_MAX_AGE_SECONDS = 60 * 60 * 24 * 7 // 7 days
 
 export function createAuthToken(payload: AdminUserPayload): string {
@@ -19,12 +23,10 @@ export function verifyAuthToken(token: string): AdminUserPayload | null {
   }
 }
 
-export const authCookieName = 'auth_token'
-
 export function createAuthCookie(token: string) {
   const isProd = process.env.NODE_ENV === 'production'
   return {
-    name: authCookieName,
+    name: 'auth_token',
     value: token,
     httpOnly: true,
     secure: isProd,
@@ -36,7 +38,7 @@ export function createAuthCookie(token: string) {
 
 export function clearAuthCookie() {
   return {
-    name: authCookieName,
+    name: 'auth_token',
     value: '',
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -45,3 +47,4 @@ export function clearAuthCookie() {
     maxAge: 0
   }
 }
+

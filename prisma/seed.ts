@@ -1,32 +1,51 @@
-import { PrismaClient } from '@prisma/client'
-import bcrypt from 'bcryptjs'
+import { PrismaClient } from "@prisma/client"
 
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('👤 Criando usuário administrador...')
 
-  const passwordHash = await bcrypt.hash('@167392Geic', 10)
-
-  await prisma.adminUser.create({
-    data: {
-      email: 'admin@geicycroche.com',
-      passwordHash,
-      role: 'admin',
+  // SOBRE
+  await prisma.customPage.upsert({
+    where: {
+      slug: "sobre"
     },
+    update: {},
+    create: {
+      slug: "sobre",
+      title: "Sobre nós",
+      introText: "Conheça nossa história e como tudo começou.",
+      section1Title: "Nossa história",
+      section1Text: "Somos apaixonados por criar peças únicas feitas à mão.",
+      coverImage: "https://via.placeholder.com/600x400"
+    }
   })
 
-  console.log('✅ Admin criado com sucesso!')
-  console.log('📧 Email: admin@geicycroche.com')
-  console.log(`🔑 Senha: xxxxxxxxxx`)
+  // PERSONALIZADOS
+  await prisma.customPage.upsert({
+    where: {
+      slug: "personalizados"
+    },
+    update: {},
+    create: {
+      slug: "personalizados",
+      title: "Pedidos Personalizados",
+      introText: "Veja como funciona para pedir seu produto personalizado.",
+      faq: [
+        {
+          question: "Como faço um pedido?",
+          answer: "Entre em contato pelo WhatsApp e envie sua ideia."
+        },
+        {
+          question: "Qual o prazo?",
+          answer: "De 5 a 10 dias úteis."
+        }
+      ]
+    }
+  })
+
+  console.log("Seed rodou com sucesso 🚀")
 }
 
 main()
-  .then(async () => {
-    await prisma.$disconnect()
-  })
-  .catch(async (e) => {
-    console.error(e)
-    await prisma.$disconnect()
-    process.exit(1)
-  })
+  .catch(console.error)
+  .finally(() => prisma.$disconnect())

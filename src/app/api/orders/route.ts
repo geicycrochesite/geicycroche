@@ -77,6 +77,7 @@ export async function POST(req: NextRequest) {
           ...validatedData,
           total,
           frete,
+          statusPagamento: 'pending', // Inicia como pendente até webhook confirmar
           address: validatedData.address,
           items: {
             create: validatedItems,

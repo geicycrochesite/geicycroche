@@ -92,7 +92,7 @@ export default function AdminOrdersPage() {
                 <tr key={order.id}>
                   <td className="px-4 py-3 text-xs text-[var(--color-text-primary)]">{order.id.slice(0, 8)}</td>
                   <td className="px-4 py-3 text-xs text-[var(--color-text-primary)]">{order.fullName}</td>
-                  <td className="px-4 py-3 text-xs text-[var(--color-text-primary)]">R${order.total.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-xs text-[var(--color-text-primary)]">R${Number(order.total || 0).toFixed(2)}</td>
                   <td className="px-4 py-3 text-xs text-[var(--color-text-primary)]">{order.statusPagamento || 'PENDENTE'}</td>
                   <td className="px-4 py-3 text-xs text-[var(--color-text-primary)]">{new Date(order.createdAt).toLocaleDateString('pt-BR')}</td>
                 </tr>

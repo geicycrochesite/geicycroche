@@ -2,7 +2,6 @@ import { prisma } from '@/lib/prisma'
 import { subDays, format, eachDayOfInterval } from 'date-fns'
 import { OrdersTable } from '@/components/admin/OrdersTable'
 import { SalesChart } from '@/components/admin/SalesChart'
-import { toNumber } from '@/lib/decimal'
 
 async function getDashboardData() {
   const from = subDays(new Date(), 29)
@@ -15,7 +14,7 @@ async function getDashboardData() {
   const totalOrders = orders.length
 
   const faturamentoTotal = orders.reduce(
-    (sum, o) => sum + toNumber(o.total),
+    (sum, o) => sum + Number(o.total),
     0
   )
 
@@ -38,7 +37,7 @@ async function getDashboardData() {
           format(order.createdAt, 'yyyy-MM-dd') ===
           format(date, 'yyyy-MM-dd')
       )
-      .reduce((sum, order) => sum + toNumber(order.total), 0)
+      .reduce((sum, order) => sum + Number(order.total), 0)
 
     return {
       date: format(date, 'dd/MM'),
@@ -50,7 +49,7 @@ async function getDashboardData() {
   const recentOrders = orders.slice(0, 10).map((order) => ({
     id: order.id,
     fullName: order.fullName,
-    total: toNumber(order.total),
+    total: Number(order.total),
     statusPagamento: order.statusPagamento || 'PENDENTE',
     createdAt: order.createdAt,
   }))

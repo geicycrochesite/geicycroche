@@ -12,6 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.1.0",
     "@prisma/client": "^5.22.0",
+    "@tailwindcss/typography": "^0.5.19",
     "@types/yup": "^0.29.14",
     "bcryptjs": "^3.0.3",
     "date-fns": "^4.1.0",

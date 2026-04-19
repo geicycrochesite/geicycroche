@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import typography from "@tailwindcss/typography";
 
 const config: Config = {
   content: [
@@ -25,9 +26,7 @@ const config: Config = {
         },
         accent: "var(--color-accent)",
         "accent-hover": "var(--color-accent-hover)",
-        success: "var(--color-success)",
         error: "var(--color-error)",
-        info: "var(--color-info)",
         border: "var(--color-border)",
         "border-light": "var(--color-border-light)",
         // Admin
@@ -39,7 +38,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [typography],
 };
 
 export default config;

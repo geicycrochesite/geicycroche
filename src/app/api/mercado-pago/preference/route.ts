@@ -1,56 +1,62 @@
 // src/app/api/mercado-pago/preference/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { MercadoPagoConfig, Preference } from 'mercadopago';
 
 type Item = { name: string; quantity: number; price: number };
 
-const client = new MercadoPagoConfig({
-  accessToken: process.env.MERCADO_PAGO_ACCESS_TOKEN!,
-});
-const preferenceClient = new Preference(client);
+type PreferenceRequestBody = {
+  items: Item[];
+  orderId: string;
+  payerEmail?: string;
+};
+
+const accessToken = process.env.MERCADO_PAGO_ACCESS_TOKEN;
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
 export async function POST(req: NextRequest) {
-  try {
-    const body = (await req.json()) as {
-      items: Item[];
-      orderId: string;
-    };
-    const { items, orderId } = body;
+  const body: PreferenceRequestBody = await req.json();
 
-    if (!items?.length || !orderId) {
-      return NextResponse.json(
-        { error: 'Dados incompletos' },
-        { status: 400 }
-      );
-    }
-
-    const preferencePayload = {
-      items: items.map((item, idx) => ({
-        id: `item-${idx}`,
-        title: item.name,
-        quantity: item.quantity,
-        currency_id: 'BRL',
-        unit_price: Number(item.price),
-      })),
-      back_urls: {
-        success: `${process.env.NEXT_PUBLIC_SITE_URL}/pedido/${orderId}?status=success`,
-        failure: `${process.env.NEXT_PUBLIC_SITE_URL}/pedido/${orderId}?status=failure`,
-        pending: `${process.env.NEXT_PUBLIC_SITE_URL}/pedido/${orderId}?status=pending`,
-      },
-      notification_url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/mercado-pago/webhook`,
-      external_reference: orderId,
-    };
-
-    const mpResponse = await preferenceClient.create({
-      body: preferencePayload,
-    });
-
-    return NextResponse.json({ init_point: mpResponse.init_point });
-  } catch (error) {
-    console.error('Erro ao criar preferência:', error);
-    return NextResponse.json(
-      { error: 'Erro ao criar preferência' },
-      { status: 500 }
-    );
+  if (!accessToken) {
+    return NextResponse.json({ error: 'MP token não configurado' }, { status: 500 });
   }
+
+  const mappedItems = body.items.map((item, idx) => ({
+    id: `item-${idx}`,
+    title: item.name,
+    quantity: Number(item.quantity),
+    currency_id: 'BRL',
+    unit_price: Number(item.price),
+  }));
+
+  const preferencePayload = {
+    items: mappedItems,
+    back_urls: {
+      success: `${siteUrl}/loja/pedido/${body.orderId}?status=success`,
+      failure: `${siteUrl}/loja/pedido/${body.orderId}?status=failure`,
+      pending: `${siteUrl}/loja/pedido/${body.orderId}?status=pending`,
+    },
+    auto_return: 'approved',
+    notification_url: `${siteUrl}/api/mercado-pago/webhook`,
+    external_reference: body.orderId,
+    payer: body.payerEmail ? { email: body.payerEmail } : undefined,
+  };
+
+  const mpResponse = await fetch('https://api.mercadopago.com/checkout/preferences', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(preferencePayload),
+  });
+
+  const data = await mpResponse.json();
+
+  if (!mpResponse.ok) {
+    return NextResponse.json({ error: data }, { status: mpResponse.status });
+  }
+
+  return NextResponse.json({
+    init_point: data.init_point,
+    id: data.id,
+  });
 }

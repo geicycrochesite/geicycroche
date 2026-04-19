@@ -28,7 +28,7 @@ export function PagarNovamenteButton({ orderId, items, frete }: PagarNovamenteBu
   }
   return (
     <button
-      className="mt-4 bg-[var(--color-info)] text-[var(--color-text-primary)] px-4 py-2 rounded hover:bg-[var(--color-info)]/80"
+      className="mt-4 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-[var(--color-bg-primary)] px-4 py-2 rounded-lg font-medium transition duration-200"
       onClick={handlePagarNovamente}
     >
       Pagar novamente

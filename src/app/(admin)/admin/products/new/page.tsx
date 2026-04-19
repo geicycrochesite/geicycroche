@@ -1,3 +1,4 @@
+//src/app/(admin)/admin/products/new/page.tsx
 import { prisma } from '@/lib/prisma'
 import ProductForm from '@/components/admin/ProductForm'
 
