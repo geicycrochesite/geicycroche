@@ -11,17 +11,18 @@ export function OrderStatusWatcher({ orderId }: { orderId: string }) {
         const res = await fetch(`/api/orders/${orderId}`)
         const data = await res.json()
 
-        console.log("STATUS:", data.statusPagamento)
+        console.log("STATUS DO BANCO:", data.statusPagamento)
 
         if (
           data.statusPagamento === "approved" &&
           !hasReloaded.current
         ) {
           hasReloaded.current = true
+          console.log("🔄 Atualizando página após confirmação...")
           window.location.reload()
         }
       } catch (err) {
-        console.error("Erro ao buscar status")
+        console.error("Erro ao buscar status", err)
       }
     }, 3000)
 
