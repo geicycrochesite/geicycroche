@@ -5,14 +5,17 @@ import { OrderStatusWatcher } from '@/lib/hooks/orderStatusWatcher'
 
 interface PedidoPageProps {
   params: Promise<{ id: string }>
-  searchParams?: Promise<{ status?: string }>
+  searchParams?: Promise<{ status?: string; payment_id?: string }>
 }
 
 export default async function PedidoPage({ params, searchParams }: PedidoPageProps) {
   const { id } = await params
-  const statusQuery = (await searchParams)?.status
-  
+  const query = await searchParams
 
+  const statusQuery = query?.status
+  const paymentId = query?.payment_id
+
+  // 🥇 BUSCA PEDIDO PRIMEIRO
   let order = await prisma.order.findUnique({
     where: { id },
     include: { items: true },
@@ -20,14 +23,21 @@ export default async function PedidoPage({ params, searchParams }: PedidoPagePro
 
   if (!order) return notFound()
 
-  if (statusQuery === 'approved' && order.statusPagamento !== 'approved') {
+  // 🥈 ATUALIZA STATUS SE VOLTOU DO MP
+  if (
+    statusQuery === 'approved' &&
+    paymentId &&
+    order.statusPagamento !== 'approved'
+  ) {
     await prisma.order.update({
       where: { id },
       data: { statusPagamento: 'approved' },
     })
+
     order = { ...order, statusPagamento: 'approved' }
   }
 
+  // 🧠 STATUS
   const statusText = {
     approved: 'Pagamento aprovado!',
     pending: 'Pagamento pendente. Aguarde confirmação.',
@@ -38,7 +48,7 @@ export default async function PedidoPage({ params, searchParams }: PedidoPagePro
 
   const displayStatus = order.statusPagamento || statusQuery || 'success'
 
-  // ✅ CORRIGIDO AQUI
+  // 💰 VALORES
   const totalProdutos =
     order.items?.reduce(
       (acc, item) => acc + Number(item.price) * item.quantity,
@@ -51,12 +61,19 @@ export default async function PedidoPage({ params, searchParams }: PedidoPagePro
   const itemsForButton = order.items.map((item) => ({
     name: item.name,
     quantity: item.quantity,
-    price: Number(item.price), // ✅ aqui também
+    price: Number(item.price),
   }))
 
   return (
     <main className="max-w-2xl mx-auto py-10 px-4 min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
-      <a href="/loja/meus-pedidos" className="text-[var(--color-accent)] hover:underline mb-4 inline-block">
+      
+      {/* 🔥 WATCHER (fora de qualquer <p>) */}
+      <OrderStatusWatcher orderId={order.id} />
+
+      <a
+        href="/loja/meus-pedidos"
+        className="text-[var(--color-accent)] hover:underline mb-4 inline-block"
+      >
         ← Voltar aos meus pedidos
       </a>
 
@@ -69,13 +86,10 @@ export default async function PedidoPage({ params, searchParams }: PedidoPagePro
           {statusText[displayStatus as keyof typeof statusText] ||
             'Aguardando pagamento...'}
         </p>
+
         <p className="text-sm text-[var(--color-text-tertiary)] mt-1">
           Status atual: {order.statusPagamento || 'aguardando'}
         </p>
-        <p className="text-sm text-[var(--color-text-tertiary)] mt-1">
-           OrderStatus <OrderStatusWatcher orderId={order.id} />
-        </p>
-        
 
         {displayStatus !== 'approved' && (
           <PagarNovamenteButton
@@ -96,16 +110,14 @@ export default async function PedidoPage({ params, searchParams }: PedidoPagePro
             key={item.id}
             className="border border-[var(--color-border-light)] p-3 rounded-lg bg-[var(--color-bg-tertiary)]"
           >
-            <p className="font-medium text-[var(--color-text-primary)]">{item.name}</p>
+            <p className="font-medium">{item.name}</p>
 
             <p className="text-sm text-[var(--color-text-secondary)] mt-1">
-              Quantidade: {item.quantity} — Tamanho: {item.size} — Cor:{' '}
-              {item.color}
+              Quantidade: {item.quantity} — Tamanho: {item.size} — Cor: {item.color}
             </p>
 
             <p className="text-sm font-semibold text-[var(--color-accent)] mt-1">
-              R${' '}
-              {(Number(item.price) * item.quantity).toFixed(2)}
+              R$ {(Number(item.price) * item.quantity).toFixed(2)}
             </p>
           </li>
         ))}
@@ -115,9 +127,11 @@ export default async function PedidoPage({ params, searchParams }: PedidoPagePro
         <div className="mb-2 text-[var(--color-text-secondary)]">
           Subtotal: R$ {totalProdutos.toFixed(2)}
         </div>
+
         <div className="mb-3 text-[var(--color-text-secondary)]">
           Frete: R$ {frete.toFixed(2)}
         </div>
+
         <div className="font-bold text-lg text-[var(--color-accent)]">
           Total: R$ {totalGeral.toFixed(2)}
         </div>
