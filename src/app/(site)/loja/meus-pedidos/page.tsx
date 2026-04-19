@@ -1,123 +1,141 @@
-'use client'
+import { prisma } from '@/lib/prisma'
+import { notFound } from 'next/navigation'
+import { PagarNovamenteButton } from '@/components/PagarNovamenteButton'
+import { OrderStatusWatcher } from '@/lib/hooks/orderStatusWatcher'
 
-import { useForm } from 'react-hook-form'
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { OrderCard } from '@/components/OrderCard'
-import { useBuscaPedidos } from '@/lib/hooks/useBuscaPedidos'
-
-type FormInputs = {
-  email: string
-  cpf: string
+interface PedidoPageProps {
+  params: Promise<{ id: string }>
+  searchParams?: Promise<{ status?: string; payment_id?: string }>
 }
 
-// 🔒 Validação de forma
-const schema = yup.object().shape({
-  email: yup.string().email('Email inválido').required('Email obrigatório'),
-  cpf: yup.string().required('CPF obrigatório'),
-})
+export default async function PedidoPage({ params, searchParams }: PedidoPageProps) {
+  const { id } = await params
+  const query = await searchParams
 
-export default function MeusPedidosPage() {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormInputs>({
-    resolver: yupResolver(schema)
+  const statusQuery = query?.status
+  const paymentId = query?.payment_id
+
+  // 🥇 BUSCA PEDIDO
+  let order = await prisma.order.findUnique({
+    where: { id },
+    include: { items: true },
   })
 
-  const { pedidos, loading, erro, semResultados, buscar } = useBuscaPedidos()
+  if (!order) return notFound()
 
-  async function handleBuscarPedidos(data: FormInputs) {
-    await buscar(data.email, data.cpf)
+  // 🥈 SE VEIO DO MERCADO PAGO → FORÇA UPDATE
+  if (statusQuery === 'approved' && paymentId) {
+    console.log("🔔 Atualizando pedido via retorno do MP")
+
+    await prisma.order.update({
+      where: { id },
+      data: { statusPagamento: 'approved' },
+    })
+
+    order = { ...order, statusPagamento: 'approved' }
   }
 
+  // 🧠 STATUS (PRIORIDADE PRA URL)
+  const displayStatus =
+    statusQuery === 'approved'
+      ? 'approved'
+      : order.statusPagamento || 'success'
+
+  const statusText = {
+    approved: 'Pagamento aprovado!',
+    pending: 'Pagamento pendente. Aguarde confirmação.',
+    rejected: 'Pagamento recusado. Tente novamente.',
+    failure: 'Erro no pagamento. Tente novamente.',
+    success: 'Pedido criado. Aguarde confirmação do pagamento.',
+  }
+
+  // 💰 VALORES
+  const totalProdutos =
+    order.items?.reduce(
+      (acc, item) => acc + Number(item.price) * item.quantity,
+      0
+    ) ?? 0
+
+  const frete = order.frete ?? 0
+  const totalGeral = Number(totalProdutos) + Number(frete)
+
+  const itemsForButton = order.items.map((item) => ({
+    name: item.name,
+    quantity: item.quantity,
+    price: Number(item.price),
+  }))
+
   return (
-    <div className="min-h-screen bg-[var(--color-bg-primary)] py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto">
-        {/* 📌 Cabeçalho */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[var(--color-text-primary)] mb-2">Consultar Meus Pedidos</h1>
-          <p className="text-[var(--color-text-secondary)]">Informe seu email e CPF para visualizar seus pedidos</p>
-        </div>
+    <main className="max-w-2xl mx-auto py-10 px-4 min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
+      
+      <OrderStatusWatcher orderId={order.id} />
 
-        {/* 📝 Formulário */}
-        <form onSubmit={handleSubmit(handleBuscarPedidos)} className="bg-[var(--color-bg-card)] rounded-3xl border border-[var(--color-border)] p-6 mb-8">
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">
-                Email
-              </label>
-              <input
-                {...register('email')}
-                id="email"
-                type="email"
-                placeholder="seu@email.com"
-                className="w-full px-4 py-2 border border-[var(--color-border-light)] bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] rounded-lg focus:outline-none focus:border-[var(--color-accent)] transition placeholder-[var(--color-text-tertiary)]"
-              />
-              {errors.email && <p className="mt-1 text-sm text-[var(--color-error)]">{errors.email.message}</p>}
-            </div>
+      <a
+        href="/loja/meus-pedidos"
+        className="text-[var(--color-accent)] hover:underline mb-4 inline-block"
+      >
+        ← Voltar aos meus pedidos
+      </a>
 
-            <div>
-              <label htmlFor="cpf" className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">
-                CPF
-              </label>
-              <input
-                {...register('cpf')}
-                id="cpf"
-                type="text"
-                placeholder="000.000.000-00"
-                className="w-full px-4 py-2 border border-[var(--color-border-light)] bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] rounded-lg focus:outline-none focus:border-[var(--color-accent)] transition placeholder-[var(--color-text-tertiary)]"
-              />
-              {errors.cpf && <p className="mt-1 text-sm text-[var(--color-error)]">{errors.cpf.message}</p>}
-            </div>
-          </div>
+      <h1 className="text-2xl font-bold mb-4">
+        Pedido #{order.id.slice(0, 8)}
+      </h1>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full mt-6 bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] disabled:bg-[var(--color-text-tertiary)] text-[var(--color-bg-primary)] font-medium py-2 px-4 rounded-lg transition duration-200"
-          >
-            {loading ? (
-              <span className="flex items-center justify-center">
-                <span className="animate-spin mr-2">⟳</span>
-                Buscando...
-              </span>
-            ) : (
-              'Buscar pedidos'
-            )}
-          </button>
-        </form>
+      <div className="mb-6 p-4 border border-[var(--color-border)] rounded-lg bg-[var(--color-bg-card)]">
+        <p className="text-lg font-semibold">
+          {statusText[displayStatus as keyof typeof statusText] ||
+            'Aguardando pagamento...'}
+        </p>
 
-        {/* ⚠️ Mensagens de erro */}
-        {erro && (
-          <div className="mb-6 p-4 bg-red-950 border border-[var(--color-error)] rounded-lg">
-            <p className="text-[var(--color-error)]">⚠️ {erro}</p>
-          </div>
-        )}
+        <p className="text-sm text-[var(--color-text-tertiary)] mt-1">
+          Status no banco: {order.statusPagamento || 'aguardando'}
+        </p>
 
-        {/* 🔍 Sem resultados */}
-        {semResultados && !loading && (
-          <div className="text-center p-6 bg-[var(--color-bg-tertiary)] border border-[var(--color-border)] rounded-lg">
-            <p className="text-[var(--color-text-secondary)]">Nenhum pedido encontrado com esses dados.</p>
-          </div>
-        )}
-
-        {/* 📋 Lista de pedidos */}
-        {pedidos.length > 0 && (
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-[var(--color-text-primary)] mb-4">
-              {pedidos.length} pedido{pedidos.length !== 1 ? 's' : ''} encontrado{pedidos.length !== 1 ? 's' : ''}:
-            </h2>
-
-            {pedidos.map((pedido) => (
-              <OrderCard
-                key={pedido.id}
-                pedido={pedido}
-                onViewDetails={(id) => {
-                  window.location.href = `/loja/pedido/${id}`
-                }}
-              />
-            ))}
-          </div>
+        {displayStatus !== 'approved' && (
+          <PagarNovamenteButton
+            orderId={order.id}
+            items={itemsForButton}
+            frete={Number(frete)}
+          />
         )}
       </div>
-    </div>
+
+      <h2 className="text-xl font-semibold mb-4">
+        Itens do pedido:
+      </h2>
+
+      <ul className="space-y-2 mb-6">
+        {order.items.map((item) => (
+          <li
+            key={item.id}
+            className="border border-[var(--color-border-light)] p-3 rounded-lg bg-[var(--color-bg-tertiary)]"
+          >
+            <p className="font-medium">{item.name}</p>
+
+            <p className="text-sm text-[var(--color-text-secondary)] mt-1">
+              Quantidade: {item.quantity} — Tamanho: {item.size} — Cor: {item.color}
+            </p>
+
+            <p className="text-sm font-semibold text-[var(--color-accent)] mt-1">
+              R$ {(Number(item.price) * item.quantity).toFixed(2)}
+            </p>
+          </li>
+        ))}
+      </ul>
+
+      <div className="border-t border-[var(--color-border)] pt-4 mt-8 text-right">
+        <div className="mb-2 text-[var(--color-text-secondary)]">
+          Subtotal: R$ {totalProdutos.toFixed(2)}
+        </div>
+
+        <div className="mb-3 text-[var(--color-text-secondary)]">
+          Frete: R$ {frete.toFixed(2)}
+        </div>
+
+        <div className="font-bold text-lg text-[var(--color-accent)]">
+          Total: R$ {totalGeral.toFixed(2)}
+        </div>
+      </div>
+    </main>
   )
 }
