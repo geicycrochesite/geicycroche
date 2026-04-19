@@ -7,7 +7,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
   const product = await prisma.product.findUnique({
     where: { id },
-    include: { categories: true, images: { orderBy: { createdAt: 'desc' } } },
+    include: { categories: true, images: { orderBy: { createdAt: 'desc' } }, colors: true, sizes: true },
   })
 
   if (!product) {
@@ -29,6 +29,8 @@ type AdminProductUpdateRequest = {
   youtubeUrl?: string | null
   imageUrls: string[]
   removeImageIds?: string[]
+  colors?: { name: string; hex: string }[]
+  sizes?: { name: string }[]
 }
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -47,6 +49,8 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     youtubeUrl,
     imageUrls,
     removeImageIds,
+    colors,
+    sizes,
   } = body
 
   if (!name || !slug || !description || typeof price !== 'number' || typeof stock !== 'number' || !Array.isArray(imageUrls)) {
@@ -104,10 +108,27 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
               }
             : {}),
         },
+
+        colors: colors ? {
+          deleteMany: {},
+          create: colors.map((color) => ({
+            name: color.name,
+            hex: color.hex,
+          })),
+        } : undefined,
+
+        sizes: sizes ? {
+          deleteMany: {},
+          create: sizes.map((size) => ({
+            name: size.name,
+          })),
+        } : undefined,
       },
       include: {
         categories: true,
         images: { orderBy: { createdAt: 'desc' } },
+        colors: true,
+        sizes: true,
       },
     })
 

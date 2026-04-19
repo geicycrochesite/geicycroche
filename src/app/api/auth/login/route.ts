@@ -1,3 +1,5 @@
+// api/admim/auth/login/route.ts
+
 import { NextResponse } from 'next/server'
 import { validateAdminCredentials, ensureDefaultAdmin } from '@/lib/auth'
 import { logAccess } from '@/lib/logger'

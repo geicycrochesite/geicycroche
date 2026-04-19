@@ -1,6 +1,5 @@
 import { prisma } from '@/lib/prisma'
 import ProductForm from '@/components/admin/ProductForm'
-import { toNumber } from '@/lib/decimal'
 
 type EditProductPageProps = {
   params: Promise<{
@@ -20,6 +19,8 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
     include: {
       categories: true,
       images: { orderBy: { createdAt: 'desc' } },
+      colors: true,
+      sizes: true, 
     },
   })
 
@@ -31,11 +32,23 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
     )
   }
 
-  // ✅ CONVERSÃO AQUI (ESSENCIAL)
-const formattedProduct = {
-  ...product,
-  price: toNumber(product.price),
-}
+  // ✅ CONVERSÃO + NORMALIZAÇÃO
+  const formattedProduct = {
+    ...product,
+    price: Number(product.price),
+
+    // 👇 transforma em array simples (provável que seu form espera isso)
+    colors: product.colors.map((c) => ({
+      id: c.id,
+      name: c.name,
+      hex: c.hex,
+    })),
+
+    sizes: product.sizes.map((s) => ({
+      id: s.id,
+      name: s.name,
+    })),
+  }
 
   return (
     <div>

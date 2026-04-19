@@ -1,40 +1,57 @@
 @import "tailwindcss";
 
+/* =====================================================
+   ROOT (TOKENS)
+   ===================================================== */
+
 :root {
-  /* Dark Theme Colors */
+  /* BACKGROUND */
   --color-bg-primary: #000000;
   --color-bg-secondary: #0B0B0B;
   --color-bg-tertiary: #111111;
   --color-bg-card: #1a1a1a;
   --color-bg-hover: #222222;
 
+  /* TEXT */
   --color-text-primary: #EADCC6;
   --color-text-secondary: #D6C7A8;
   --color-text-tertiary: #B8A98A;
   --color-text-muted: #CFC2A8;
 
+  /* ACCENT */
   --color-accent: #C8A96A;
   --color-accent-hover: #B89A5A;
 
-  --color-success: #2F8F5B;
+  /* STATUS */
   --color-error: #dc2626;
-  --color-info: #2563eb;
+  --color-success: #16a34a;
+  --color-info: #C8A96A;
 
+  /* BORDER */
   --color-border: #333333;
   --color-border-light: #444444;
 
-  /* Admin Panel (adapted to dark) */
+  /* ADMIN */
   --color-admin-bg: #1a1a1a;
   --color-admin-text: #EADCC6;
   --color-admin-border: #333333;
 }
 
+/* =====================================================
+   TAILWIND THEME
+   ===================================================== */
+
 @theme inline {
   --color-background: var(--color-bg-primary);
   --color-foreground: var(--color-text-primary);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
+
+/* =====================================================
+   BASE
+   ===================================================== */
 
 body {
   background: var(--color-bg-primary);
@@ -42,23 +59,27 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* =====================================================
+   ANIMAÇÕES
+   ===================================================== */
+
 @keyframes enter {
-  0% {
+  from {
     opacity: 0;
     transform: translateY(-10px);
   }
-  100% {
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
 @keyframes leave {
-  0% {
+  from {
     opacity: 1;
     transform: translateY(0);
   }
-  100% {
+  to {
     opacity: 0;
     transform: translateY(-10px);
   }
@@ -71,6 +92,142 @@ body {
 .animate-leave {
   animation: leave 0.3s ease-in forwards;
 }
+
+/* =====================================================
+   COMPONENTES PADRÃO (SEGUROS)
+   ===================================================== */
+
 .input {
-  @apply w-full border border-[var(--color-admin-border)] bg-[var(--color-bg-tertiary)] text-[var(--color-admin-text)] rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)];
+  @apply w-full rounded-2xl border border-[var(--color-admin-border)] bg-[var(--color-bg-tertiary)] px-4 py-3 text-sm outline-none;
+}
+
+.input:focus {
+  @apply ring-2;
+  ring-color: var(--color-accent);
+}
+
+.card {
+  @apply rounded-3xl border border-[var(--color-admin-border)] bg-[var(--color-admin-bg)] p-6;
+}
+
+.title {
+  @apply text-lg font-semibold mb-4;
+}
+
+/* =====================================================
+   BOTÕES
+   ===================================================== */
+
+.btn-primary {
+  @apply rounded-3xl px-5 py-3 text-sm font-semibold transition;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
+
+.btn-primary:hover {
+  background: var(--color-bg-hover);
+}
+
+.btn-success {
+  @apply rounded-3xl px-5 py-3 text-sm font-semibold transition text-white;
+  background: var(--color-success);
+}
+
+.btn-success:hover {
+  background: #15803d;
+}
+
+.btn-secondary {
+  @apply rounded-2xl border px-3 py-2 text-xs font-semibold transition;
+  border-color: var(--color-admin-border);
+  background: var(--color-bg-tertiary);
+  color: var(--color-admin-text);
+}
+
+.btn-secondary:hover {
+  background: var(--color-bg-hover);
+}
+
+.btn-accent {
+  @apply inline-block px-8 py-4 rounded transition;
+  background: var(--color-accent);
+  color: var(--color-bg-primary);
+}
+
+.btn-accent:hover {
+  background: var(--color-accent-hover);
+}
+
+.btn-outline-accent {
+  @apply inline-block px-6 py-3 rounded transition border;
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.btn-outline-accent:hover {
+  background: var(--color-accent);
+  color: var(--color-bg-primary);
+}
+
+/* =====================================================
+   CARDS
+   ===================================================== */
+
+.card-category {
+  @apply block p-6 rounded-xl border transition;
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-bg-hover);
+}
+
+.card-category:hover {
+  border-color: var(--color-accent);
+}
+
+.card-blog {
+  @apply block rounded-lg overflow-hidden transition-shadow;
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-admin-border);
+}
+
+.card-blog:hover {
+  @apply shadow-lg;
+}
+
+.card-post {
+  @apply rounded-3xl border overflow-hidden transition;
+  background: var(--color-bg-card);
+  border-color: var(--color-border);
+}
+
+.card-post:hover {
+  @apply shadow-md;
+}
+
+/* =====================================================
+   TABELAS
+   ===================================================== */
+
+.table-container {
+  @apply overflow-hidden rounded-3xl shadow-sm;
+  border: 1px solid var(--color-admin-border);
+  background: var(--color-admin-bg);
+}
+
+.table-header {
+  background: var(--color-bg-tertiary);
+}
+
+.table-row:hover {
+  background: var(--color-bg-hover);
+}
+
+/* =====================================================
+   ALERTAS
+   ===================================================== */
+
+.alert-error {
+  @apply rounded-3xl p-8;
+  border: 1px solid var(--color-error);
+  background: rgba(220, 38, 38, 0.2);
+  color: var(--color-error);
 }
