@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
-import React from 'react'
 import { PagarNovamenteButton } from '@/components/PagarNovamenteButton'
+import { OrderStatusWatcher } from '@/lib/hooks/orderStatusWatcher'
 
 interface PedidoPageProps {
   params: Promise<{ id: string }>
@@ -11,6 +11,7 @@ interface PedidoPageProps {
 export default async function PedidoPage({ params, searchParams }: PedidoPageProps) {
   const { id } = await params
   const statusQuery = (await searchParams)?.status
+  
 
   let order = await prisma.order.findUnique({
     where: { id },
@@ -71,6 +72,10 @@ export default async function PedidoPage({ params, searchParams }: PedidoPagePro
         <p className="text-sm text-[var(--color-text-tertiary)] mt-1">
           Status atual: {order.statusPagamento || 'aguardando'}
         </p>
+        <p className="text-sm text-[var(--color-text-tertiary)] mt-1">
+           OrderStatus <OrderStatusWatcher orderId={order.id} />
+        </p>
+        
 
         {displayStatus !== 'approved' && (
           <PagarNovamenteButton

@@ -34,6 +34,7 @@ export async function POST(req: NextRequest) {
       failure: `${siteUrl}/loja/pedido/${body.orderId}?status=failure`,
       pending: `${siteUrl}/loja/pedido/${body.orderId}?status=pending`,
     },
+    auto_return: 'approved',
     notification_url: `${siteUrl}/api/mercado-pago/webhook`,
     external_reference: body.orderId,
     payer: body.payerEmail ? { email: body.payerEmail } : undefined,
