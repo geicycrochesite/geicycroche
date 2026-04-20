@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
+import { Settings } from "lucide-react"
 
 export default function Footer() {
   return (
@@ -104,9 +105,15 @@ export default function Footer() {
 
       </div>
 
-      {/* COPYRIGHT */}
-      <div className="text-center py-6 text-xs bg-black text-[#B8A98A] border-t border-[#1a1a1a]">
-        © {new Date().getFullYear()} Geicy Crochê — Crochê com Estilo e Elegância
+{/* COPYRIGHT */}
+      <div className="flex items-center justify-center gap-2 py-6 text-xs bg-black text-[#B8A98A] border-t border-[#1a1a1a]">
+        <Link href="/admin/login" className="opacity-60 hover:opacity-100 transition">
+          <Settings className="w-3 h-3" />
+        </Link>
+        <span>
+          © {new Date().getFullYear()} Geicy Crochê — Crochê com Estilo e Elegância
+        </span>
+
       </div>
 
     </footer>

@@ -85,6 +85,9 @@ export default async function HomePage() {
                 <p className="text-sm text-[var(--color-text-tertiary)]">
                   {cat.description || "Explore conteúdos exclusivos sobre crochê."}
                 </p>
+                <p className="text-[var(--color-accent)] font-semibold mt-4 group-hover:underline">
+                  Clique para saber mais
+                </p>
               </Link>
             ))}
           </div>
@@ -102,6 +105,12 @@ export default async function HomePage() {
           <p className="text-[var(--color-text-muted)] leading-relaxed">
             Cada peça é feita manualmente com atenção aos detalhes.
           </p>
+                    <a
+            href="/loja"
+            className="inline-block px-8 py-4 text-[var(--color-bg-primary)] bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] transition rounded"
+          >
+            Veja nossas coleções exclusivas
+          </a>
         </div>
       </section>
 
@@ -117,7 +126,7 @@ export default async function HomePage() {
           </p>
 
           <a
-            href="https://wa.me/5521986369426"
+            href="https://wa.me/5521986483118"
             className="inline-block px-8 py-4 text-[var(--color-bg-primary)] bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] transition rounded"
           >
             Pedir no WhatsApp
