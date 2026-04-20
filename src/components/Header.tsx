@@ -13,15 +13,16 @@ export default function Header() {
   return (
     <header className="w-full fixed top-0 z-50 bg-[var(--color-bg-primary)]/90 backdrop-blur">
 
-      <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div className="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
 
         <Image
           src="/logo-geicy-croche-horizontal.png"
           alt="Geicy Crochê"
-          width={200}
-          height={80}
+          width={140}
+          height={60}
         />
 
+        {/* Desktop */}
         <nav className="hidden md:flex gap-8 text-sm text-[var(--color-text-primary)]">
           <Link href="/">Início</Link>
           <Link href="/sobre">Sobre</Link>
@@ -45,13 +46,29 @@ export default function Header() {
           Peça sob encomenda
         </a>
 
-        <button onClick={() => setOpen(!open)} className="md:hidden">
-          {open ? (
-              <X className="text-[var(--color-text-primary)] hover:text-[var(--color-accent)] transition" />
-            ) : (
-              <Menu className="text-[var(--color-text-primary)] hover:text-[var(--color-accent)] transition" />
+        {/* Mobile Right Icons */}
+        <div className="flex items-center gap-3 md:hidden">
+          <Link href="/loja" className="text-sm font-semibold text-[var(--color-text-primary)]">
+            Loja
+          </Link>
+
+          <Link href="/loja/carrinho" className="relative">
+            <ShoppingCart className="w-5 h-5 text-[var(--color-text-primary)]" />
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 h-4 min-w-[1rem] flex items-center justify-center rounded-full bg-[var(--color-accent)] px-1 text-[0.6rem] font-bold text-[var(--color-bg-primary)]">
+                {totalItems}
+              </span>
             )}
-        </button>
+          </Link>
+
+          <button onClick={() => setOpen(!open)}>
+            {open ? (
+              <X className="text-[var(--color-text-primary)]" />
+            ) : (
+              <Menu className="text-[var(--color-text-primary)]" />
+            )}
+          </button>
+        </div>
       </div>
 
       {open && (
@@ -59,6 +76,7 @@ export default function Header() {
           <Link href="/">Início</Link>
           <Link href="/sobre">Sobre</Link>
           <Link href="/pecas">Peças</Link>
+          <Link href="/loja">Loja</Link>
           <Link href="/loja/carrinho">Carrinho</Link>
           <Link href="/contato">Contato</Link>
         </div>

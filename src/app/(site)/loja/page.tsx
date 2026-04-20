@@ -22,36 +22,39 @@ export default async function LojaPage() {
 
   return (
     <main>
-      <section className="p-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <section className="p-4 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
         {products.map((product) => {
           const image = product.images?.[0]?.url || '/logo-artesanaio.jpeg'
 
           return (
             <Link
-              key={product.id}
-              href={`/loja/produto/${product.slug}`}
-              className="bg-white shadow-lg rounded-xl overflow-hidden hover:scale-105 transition"
-            >
-              <Image
-                src={image}
-                alt={product.name}
-                width={500}
-                height={500}
-                className="w-full h-100 object-cover rounded-xl"
-              />
+  key={product.id}
+  href={`/loja/produto/${product.slug}`}
+  className="bg-white shadow-md rounded-xl overflow-hidden hover:scale-105 transition flex flex-col"
+>
+  <div className="w-full aspect-square relative">
+    <Image
+      src={image}
+      alt={product.name}
+      fill
+      className="object-cover"
+    />
+  </div>
 
-              <h2 className="text-xl font-semibold mt-2 px-4">
-                {product.name}
-              </h2>
+  <div className="p-2 flex flex-col flex-1">
+    <h2 className="text-sm font-semibold line-clamp-2 text-[var(--color-accent)]">
+      {product.name}
+    </h2>
 
-              <p className="text-lg text-green-700 font-bold px-4">
-                R$ {Number(product.price).toFixed(2)}
-              </p>
+    <p className="text-green-700 font-bold text-sm mt-1">
+      R$ {Number(product.price).toFixed(2)}
+    </p>
 
-              <button className="bg-green-600 px-8 py-2 m-4 rounded-xl text-center font-bold text-white">
-                VER DETALHES
-              </button>
-            </Link>
+    <button className="bg-green-600 w-full mt-auto py-1 rounded-lg text-xs font-bold text-white">
+      VER DETALHES
+    </button>
+  </div>
+</Link>
           )
         })}
       </section>
