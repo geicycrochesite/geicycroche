@@ -76,6 +76,7 @@ model Order {
   frete            Decimal? @db.Decimal(10, 2)
   total            Decimal  @db.Decimal(10, 2)
   statusPagamento  String?
+  customerId       String?  // Asaas Customer ID
   createdAt        DateTime @default(now())
 
   items            OrderItem[]

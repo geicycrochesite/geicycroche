@@ -34,10 +34,16 @@ export async function createAdminUser(email: string, password: string) {
 }
 
 export async function ensureDefaultAdmin() {
-  const admin = await prisma.adminUser.findFirst({ where: { role: 'admin' } })
+  const admin = await prisma.adminUser.findFirst({
+    where: { role: 'admin' },
+  })
+
   if (!admin) {
-    return createAdminUser('admin@admin.com', '123456')
+    throw new Error(
+      'Nenhum admin encontrado. Execute o setup inicial com SETUP_ADMIN_KEY.'
+    )
   }
+
   return admin
 }
 

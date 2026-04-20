@@ -97,46 +97,10 @@ export default function CheckoutForm() {
       console.log('Dados do pedido criado:', orderData)
       const { orderId } = orderData
 
-      // Itens formatados para Mercado Pago
-      const formattedItems = [
-        ...items.map((item) => ({
-          name: item.name,
-          quantity: item.quantity,
-          price: item.price,
-        })),
-        {
-          name: 'Frete',
-          quantity: 1,
-          price: frete,
-        },
-      ]
-
-      console.log('Itens formatados para MP:', formattedItems)
-      console.log('Enviando requisição para /api/mercado-pago/preference')
-
-      // Criação da preferência do Mercado Pago
-      const prefRes = await fetch('/api/mercado-pago/preference', {
-        method: 'POST',
-        body: JSON.stringify({ items: formattedItems, orderId }),
-        headers: { 'Content-Type': 'application/json' },
-      })
-
-      console.log('Resposta de /api/mercado-pago/preference:', prefRes.status, prefRes.statusText)
-
-      if (!prefRes.ok) {
-        const errorData = await prefRes.json()
-        console.error('Erro em /api/mercado-pago/preference:', errorData)
-        toast.error('Erro ao redirecionar para o pagamento.')
-        return
-      }
-
-      const prefData = await prefRes.json()
-      console.log('Dados da preferência:', prefData)
-      const { init_point } = prefData
-
-      console.log('Limpando carrinho e redirecionando para:', init_point)
+      // Redirecionar para a página de pagamento (checkout transparente Asaas)
+      console.log('Limpando carrinho e redirecionando para pagamento')
       clearCart()
-      router.push(init_point)
+      router.push(`/loja/pedido/${orderId}/pagamento`)
     } catch (err) {
       console.error('Erro geral no onSubmit:', err)
       toast.error('Erro ao finalizar o pedido')
