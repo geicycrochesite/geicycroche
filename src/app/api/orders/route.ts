@@ -4,6 +4,26 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { ValidationError } from 'yup'
 
+// ✅ GET - Listar pedidos
+export async function GET(req: NextRequest) {
+  try {
+    const orders = await prisma.order.findMany({
+      include: {
+        items: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+
+    return NextResponse.json(orders)
+  } catch (error: any) {
+    console.error(error)
+    return NextResponse.json({ error: 'Erro ao listar pedidos.' }, { status: 500 })
+  }
+}
+
+// ✅ POST - Criar pedido
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
