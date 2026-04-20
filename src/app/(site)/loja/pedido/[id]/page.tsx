@@ -1,7 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import { PagarNovamenteButton } from '@/components/PagarNovamenteButton'
-import { OrderStatusWatcher } from '@/lib/hooks/orderStatusWatcher'
 
 interface PedidoPageProps {
   params: Promise<{ id: string }>
@@ -23,7 +22,6 @@ export default async function PedidoPage({ params, searchParams }: PedidoPagePro
 
   if (!order) return notFound()
 
-  // 🥈 ATUALIZA STATUS SE VOLTOU DO MP
   if (
     statusQuery === 'approved' &&
     paymentId &&
@@ -66,9 +64,6 @@ export default async function PedidoPage({ params, searchParams }: PedidoPagePro
 
   return (
     <main className="max-w-2xl mx-auto py-10 px-4 min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
-      
-      {/* 🔥 WATCHER (fora de qualquer <p>) */}
-      <OrderStatusWatcher orderId={order.id} />
 
       <a
         href="/loja/meus-pedidos"
@@ -94,8 +89,6 @@ export default async function PedidoPage({ params, searchParams }: PedidoPagePro
         {displayStatus !== 'approved' && (
           <PagarNovamenteButton
             orderId={order.id}
-            items={itemsForButton}
-            frete={Number(frete)}
           />
         )}
       </div>

@@ -16,9 +16,7 @@ interface AsaasConfig {
  */
 export function getAsaasApiKey(): string {
   const key =
-    process.env.ASAAS_API_KEY ||
-    '$aact_hmlg_000MzkwODA2MWY2OGM3MWRlMDU2NWM3MzJlNzZmNGZhZGY6OjZmZWZjZTQyLTcwMWQtNGYxZS1iZjdkLTdlMTNmNmZhNWZjMDo6JGFhY2hfYTM3ZDU2MzAtN2QwZS00NDM1LTg1MDAtNmE4NWMyZTk0YWYw'; // fallback TEMPORÁRIO
-
+    process.env.ASAAS_API_KEY
   if (!key) {
     throw new Error('ASAAS_API_KEY não configurada');
   }
