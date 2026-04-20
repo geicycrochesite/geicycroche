@@ -52,7 +52,7 @@ export default async function HomePage() {
             </p>
 
             <a
-              href="https://wa.me/5521986369426"
+              href="/loja"
               className="inline-block px-6 py-3 border border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[var(--color-bg-primary)] transition rounded"
             >
               Conheça nossas peças
