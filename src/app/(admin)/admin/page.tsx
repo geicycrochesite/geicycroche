@@ -1,3 +1,4 @@
+// src/app/(admin)/admin/page.tsx
 import { prisma } from '@/lib/prisma'
 import { subDays, format, eachDayOfInterval } from 'date-fns'
 import { OrdersTable } from '@/components/admin/OrdersTable'
