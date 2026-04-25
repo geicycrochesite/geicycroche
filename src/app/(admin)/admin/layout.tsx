@@ -50,6 +50,7 @@ export default function AdminLayout({
                 <Link href="/admin/blog/posts">Posts Blog</Link>
                 <Link href="/admin/custom-page">Páginas Personalizadas</Link>
                 <Link href="/admin/etiquetas">Etiquetas</Link>
+                <Link href="/admin/clients">Asaas</Link>
                 <LogoutButton />
               </nav>
 

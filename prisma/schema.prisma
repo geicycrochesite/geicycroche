@@ -107,6 +107,17 @@ model AdminUser {
   logs         AccessLog[]
 }
 
+model Client {
+  id             String   @id @default(cuid())
+  name           String
+  email          String   @unique
+  cpfCnpj        String?
+  phone          String?
+  asaasAccountId String?
+  asaasWalletId  String?
+  createdAt      DateTime @default(now())
+}
+
 model AccessLog {
   id        String      @id @default(cuid())
   userId    String?

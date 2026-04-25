@@ -134,6 +134,34 @@ export async function asaasFetch<T = any>(
   }
 }
 
+export interface CreateAsaasAccountData {
+  name: string;
+  email: string;
+  cpfCnpj?: string;
+  phone?: string;
+}
+
+export interface AsaasAccountResponse {
+  id: string;
+  walletId?: string;
+}
+
+export async function createAsaasAccount(
+  account: CreateAsaasAccountData
+): Promise<AsaasAccountResponse> {
+  const response = await asaasFetch<AsaasAccountResponse>('/accounts', 'POST', {
+    name: account.name,
+    email: account.email,
+    cpfCnpj: account.cpfCnpj || undefined,
+    phone: account.phone || undefined,
+  });
+
+  return {
+    id: response.id,
+    walletId: response.walletId,
+  };
+}
+
 /**
  * =========================
  * TYPES (opcional)
