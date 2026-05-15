@@ -28,7 +28,7 @@ export const siteConfig = {
     { label: "Início", href: "/" },
     { label: "Sobre", href: "/sobre" },
     { label: "Loja", href: "/loja" },
-    { label: "Contato", href: "/contato" },
+    { label: "Contato", href: "https://wa.me/5521986483118" },
   ],
 
   // Navegação mobile
@@ -37,7 +37,7 @@ export const siteConfig = {
     { label: "Sobre", href: "/sobre" },
     { label: "Loja", href: "/loja" },
     { label: "Carrinho", href: "/loja/carrinho" },
-    { label: "Contato", href: "/contato" },
+    { label: "Contato", href: "https://wa.me/5521986483118" },
   ],
 
   // Footer — benefícios (EXATAMENTE DA IMAGEM)
@@ -61,7 +61,7 @@ export const siteConfig = {
     { label: "Início", href: "/" },
     { label: "Peças em Crochê", href: "/loja" },
     { label: "Sobre", href: "/sobre" },
-    { label: "Contato", href: "/contato" },
+    { label: "Contato", href: "https://wa.me/5521986483118" },
   ],
 
   footerDescription:
@@ -88,7 +88,7 @@ export const siteConfig = {
   // 🎨 TEMA 100% BASEADO NA IMAGEM
   theme: {
     // BACKGROUND
-    bgPrimary: "#000000",
+    bgPrimary: "#9b7d3c",
     bgSecondary: "#0B0B0B",
     bgTertiary: "#111111",
     bgCard: "#1a1a1a",
